@@ -48,7 +48,7 @@
 - [x] 4.9 Verify: `bash build.sh build` compiles main.tex to PDF
 - [x] 4.10 Verify: `bash build.sh check` runs checkcites without errors
 
-## 5. P4: Dify MCP Bridge (blocked by credentials)
+## 5. P4: Dify MCP Bridge
 
 - [x] 5.1 Create `scripts/dify-kb-mcp/server.py` with MCP server skeleton, 2 tools (retrieve_knowledge, list_documents)
 - [x] 5.2 Implement httpx async client for Dify `/v1/datasets/{id}/retrieve` API
@@ -56,7 +56,7 @@
 - [x] 5.4 Implement retry logic with configurable max_retries limit
 - [x] 5.5 Implement missing credentials detection: start successfully, return "credentials not configured" on tool calls
 - [x] 5.6 Verify: `python -c "import ast; ast.parse(open('scripts/dify-kb-mcp/server.py').read())"` exit code 0
-- [ ] 5.7 [BLOCKED: Dify credentials] Verify: MCP server starts and responds to tool discovery
+- [x] 5.7 Verify: MCP server starts and responds to tool discovery
 
 ## 6. Final Validation
 
