@@ -60,10 +60,10 @@
 
 ## 6. Final Validation
 
-- [ ] 6.1 Run `uv run scripts/validate_env.py` — all required checks pass (exit code 0 or 2)
-- [ ] 6.2 Verify CLAUDE.md line count: `wc -l CLAUDE.md` <= 300
-- [ ] 6.3 Verify all Python files pass syntax check: `uv run python -m py_compile` on each .py file
-- [ ] 6.4 Verify `.mcp.json` valid: `jq . .mcp.json` succeeds
-- [ ] 6.5 Verify no hardcoded secrets in tracked files: scan for API key patterns
-- [ ] 6.6 Verify uv.lock is tracked: `git ls-files uv.lock` returns path
-- [ ] 6.7 Run `git status` — no unexpected untracked files, working tree clean after initial commit
+- [x] 6.1 Run `uv run scripts/validate_env.py` — all required checks pass (exit code 0 or 2)
+- [x] 6.2 Verify CLAUDE.md line count: `wc -l CLAUDE.md` <= 300
+- [x] 6.3 Verify all Python files pass syntax check: `uv run python -m py_compile` on each .py file
+- [x] 6.4 Verify `.mcp.json` valid: `jq . .mcp.json` succeeds
+- [x] 6.5 Verify no hardcoded secrets in tracked files: scan for API key patterns
+- [x] 6.6 Verify uv.lock is tracked: `git ls-files uv.lock` returns path
+- [x] 6.7 Run `git status` — no unexpected untracked files, working tree clean after initial commit
