@@ -62,26 +62,36 @@
 
 ## 下一步行动
 
-基础架构已就绪，后续开发路径：
+基础架构已就绪，完整路线图见 **`openspec/ROADMAP.md`**（v4，617 行，7 阶段）。
+
+### 阶段依赖图
 
 ```
-[当前] 基础架构完成
+Phase 1: 基础架构 [已完成]
    |
-   v
-MVP-4: [等待 TeX Live] LaTeX 编译链端到端验证
-   |
-   v
-MVP-5: 数据处理管线 (CSV -> Pandas -> matplotlib -> LaTeX assets)
-   |
-   v
-MVP-6: 单智能体草稿撰写（使用 paper-search 检索 + 模板填充）
-   |
-   v
-MVP-7: 多智能体编排 + 章节并行生成
-   |
-   v
-MVP-8: 编译链 + 自动修复 + 同行评审模拟
+   +---> Phase 2: 数据模型 + 处理管线 ─────+
+   |                                        +---> Phase 4: 单 Agent 草稿撰写
+   +---> Phase 3: 文献整合工作流 ───────────+            |
+                                                         v
+                                                Phase 5: 多 Agent 编排
+                                                         |
+                                                         v
+                                                Phase 6: 编译 + 质量保证
+                                                         |
+                                                         v
+                                                Phase 7: 端到端集成
 ```
+
+- Phase 2 和 Phase 3 **可并行开发**（无相互依赖）
+- 阶段间设有 **Approval Gates**（通过 AskUserQuestion 实现人机协同审批）
+- 详细阶段说明、交付物清单、验证标准见 `openspec/ROADMAP.md`
+
+### 下一阶段工作（Phase 2 + Phase 3 并行）
+
+| 阶段 | 核心交付物 | 涉及目录 |
+|------|-----------|---------|
+| Phase 2 | Pydantic 模型 + 契约体系 + 数据管线 + 图表生成 + Golden Test | `src/vibewriting/models/`, `contracts/`, `processing/`, `visualization/` |
+| Phase 3 | 文献检索工作流 + Evidence Card 系统 + BibTeX 管理 | `src/vibewriting/agents/`, `data/processed/literature/` |
 
 ### 需要用户操作的阻塞项
 
@@ -90,7 +100,8 @@ MVP-8: 编译链 + 自动修复 + 同行评审模拟
 
 ### 可立即开始的工作
 
-- 数据处理管线搭建（`src/vibewriting/processing/`, `src/vibewriting/visualization/`）
-- 文献检索测试（通过 paper-search MCP，无需 TeX Live）
-- Pydantic 数据模型定义（`src/vibewriting/models/`）
-- 多智能体编排设计（`src/vibewriting/agents/`）
+- Pydantic 数据模型定义（`src/vibewriting/models/`）-- Phase 2
+- 阶段产物契约 + JSON Schema（`src/vibewriting/contracts/`）-- Phase 2
+- 数据处理管线搭建（`src/vibewriting/processing/`, `visualization/`）-- Phase 2
+- 文献检索端到端工作流测试（通过 paper-search MCP，无需 TeX Live）-- Phase 3
+- Evidence Card 系统设计（`literature_cards.jsonl` + schema）-- Phase 3

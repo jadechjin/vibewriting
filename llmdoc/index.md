@@ -2,7 +2,7 @@
 
 基于 Claude Code 与 Dify 知识库的科研论文自动化写作系统。
 
-**项目状态**: 基础架构搭建完成（`project-foundation-architecture` 变更已归档，52/52 任务，6 个 spec 已合并）
+**项目状态**: 基础架构搭建完成（Phase 1 归档，52/52 任务，6 spec 已合并）| 路线图 v4 已就绪（Phase 2-7 规划完成，见 `openspec/ROADMAP.md`）
 
 ## 快速导航
 
@@ -10,8 +10,8 @@
 
 | 文档 | 内容 | 何时阅读 |
 |------|------|---------|
-| [architecture.md](overview/architecture.md) | 三层架构设计、技术栈决策、四阶段工作流 | 理解系统整体设计 |
-| [project-status.md](overview/project-status.md) | 当前环境状态、已完成里程碑、下一步行动 | 了解项目进展和待办 |
+| [architecture.md](overview/architecture.md) | 三层架构设计、技术栈决策、七阶段工作流、契约体系、设计原则 | 理解系统整体设计 |
+| [project-status.md](overview/project-status.md) | 当前环境状态、已完成里程碑、路线图概览、下一步行动 | 了解项目进展和待办 |
 
 ### guides/ - 操作指南
 
@@ -19,6 +19,7 @@
 |------|------|---------|
 | [development.md](guides/development.md) | 开发环境搭建、构建流程、验证命令 | 开始开发前 |
 | [mcp-integration.md](guides/mcp-integration.md) | MCP 服务器配置、工具调用方法、调试技巧 | 使用文献检索或知识库时 |
+| [roadmap-guide.md](guides/roadmap-guide.md) | ROADMAP.md 导读、阶段速查、契约体系、设计原则索引 | 了解整体规划或开始新阶段时 |
 
 ### architecture/ - 系统架构详情
 
@@ -39,6 +40,7 @@
 | 文件 | 路径 | 说明 |
 |------|------|------|
 | CLAUDE.md | `CLAUDE.md` | Claude Code 项目配置（90 行，5 核心要素） |
+| ROADMAP.md | `openspec/ROADMAP.md` | 总体路线图 v4（617 行，Phase 2-7 规划 + 9 设计原则 + 契约体系） |
 | pyproject.toml | `pyproject.toml` | Python 包定义，uv + hatchling，src 布局 |
 | uv.lock | `uv.lock` | 依赖锁文件，保证科研可复现性 |
 | .mcp.json | `.mcp.json` | MCP 服务器配置：paper-search(stdio) + dify-knowledge(bridge) |

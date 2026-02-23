@@ -2,7 +2,7 @@
 
 **项目**: vibewriting - 基于 Claude Code 与 Dify 知识库的科研论文自动化写作系统
 **目标**: 输入论文主题，端到端产出可编译的 LaTeX 论文 + PDF
-**状态**: 基础架构搭建完成（project-foundation-architecture 变更已归档）
+**状态**: 基础架构搭建完成（Phase 1 归档）| 路线图 v4 已就绪（Phase 2-7 规划完成）
 
 ## 三层架构
 
@@ -65,23 +65,94 @@ Dify 桥接服务器特性：
 | LaTeX 表格 | Python + jinja2 + tabulate | 生成 .tex 表格文件 | 依赖就绪，管线待建 |
 | 编译链 | XeLaTeX + latexmk + BibTeX | 论文编译，输出 PDF | 模板就绪，需 TeX Live |
 
-## 四阶段工作流
+## 七阶段工作流
+
+完整路线图见 `openspec/ROADMAP.md`（v4，617 行）。
+
+### 阶段总览
 
 ```
-阶段1: 文献检索             阶段2: 数据处理
-[paper-search MCP]     ->  [Python/Pandas/Matplotlib]
-  输出: BibTeX/JSON/MD       输出: .tex/.pdf/.png
-         |                          |
-         v                          v
-阶段3: 协同撰写             阶段4: 编译评审
-[Multi-Agent Writing]  ->  [latexmk + BibTeX + Review]
-  输出: .tex 源码              输出: PDF + 评审报告
+Phase 1: 基础架构 [已完成]
+   |
+   +---> Phase 2: 数据模型 + 处理管线        Phase 3: 文献整合工作流
+   |        (资产契约 + 图表)                   (证据卡 + BibTeX)
+   |              |                                    |
+   |              +------------ Approval Gates --------+
+   |                                |
+   |                                v
+   |                   Phase 4: 单 Agent 草稿撰写
+   |                       (Evidence-First + 增量编译)
+   |                                |
+   |                                v
+   |                   Phase 5: 多 Agent 编排
+   |                       (Orchestrator + 角色 Agent)
+   |                                |
+   |                                v
+   |                   Phase 6: 编译 + 质量保证
+   |                       (自修复 + 同行评审模拟)
+   |                                |
+   |                                v
+   |                   Phase 7: 端到端集成
+   |                       (一键: 主题 -> PDF)
 ```
 
-- **阶段1**: 复用 paper-search MCP，检查点驱动，导出 BibTeX 引用库
-- **阶段2**: 原始数据 -> pandas 清洗 -> matplotlib 图表 + LaTeX 表格
-- **阶段3**: Orchestrator 分析大纲，委派 Storyteller/Analyst 等角色并行撰写章节
-- **阶段4**: latexmk 编译、checkcites 引文验证、模拟同行评审
+各阶段对应四个核心工作流：
+
+| 工作流 | 阶段 | 输入 | 输出 |
+|--------|------|------|------|
+| 智能化文献检索 | Phase 3 | 研究主题 | `literature_cards.jsonl` + BibTeX |
+| 数据分析与资产生成 | Phase 2 | 原始数据 | 图表(.pgf/.pdf) + 表格(.tex) + `asset_manifest.json` |
+| 协同撰写 | Phase 4 + 5 | 证据卡 + 数据资产 | `paper/sections/*.tex` + `paper_state.json` |
+| 编译与评审 | Phase 6 + 7 | LaTeX 源码 | PDF + 审查报告 + `run_metrics.json` |
+
+## 阶段产物契约体系
+
+JSON 是唯一事实源，LaTeX 是渲染层。所有阶段产物通过机器可验证的 JSON Schema 定义。
+
+```
+src/vibewriting/contracts/
+  +-- paper_state.json        <- 论文全局状态机（章节/图表/引用/claim 状态 + metrics）
+  +-- literature_cards.jsonl  <- 文献证据卡集合
+  +-- asset_manifest.json     <- 数据资产清单（图表/表格路径 + 哈希 + 语义描述）
+  +-- run_manifest.json       <- 运行环境锁定（run_id + 数据版本/种子/依赖/TeX Live 版本）
+  +-- glossary.json           <- 术语表（术语 -> 定义，跨章节统一）
+  +-- symbols.json            <- 符号表（符号 -> 含义，跨章节统一）
+  +-- schemas/                <- JSON Schema 定义文件
+```
+
+产出阶段分配：
+
+| 契约文件 | 产出阶段 | 消费阶段 |
+|---------|---------|---------|
+| `asset_manifest.json` | Phase 2 | Phase 4/5/6 |
+| `run_manifest.json` | Phase 2 | Phase 6/7 |
+| `literature_cards.jsonl` | Phase 3 | Phase 4/5/6 |
+| `paper_state.json` | Phase 4 | Phase 5/6/7 |
+| `glossary.json` + `symbols.json` | Phase 4 初版 | Phase 5 合并裁决, Phase 6 一致性验证 |
+
+契约强校验与自愈：写入任何契约文件前，必须经过 `jsonschema.validate()` 拦截，校验失败触发 Prompt 反弹修复（最多重试 3 次）。
+
+引用完整性约束（Phase 6 验证）：
+- `paper_state` 中的 `claim_id` -> `literature_cards`
+- `paper_state` 中的 `asset_id` -> `asset_manifest`
+- 术语/符号 -> `glossary` / `symbols`
+- `bib_key` -> `references.bib`
+
+## 跨阶段设计原则（9 项）
+
+详细说明见 `openspec/ROADMAP.md` "跨阶段设计原则" 章节。
+
+| 编号 | 原则 | 核心思想 |
+|------|------|---------|
+| 1 | 阶段产物契约 | JSON Schema + 自愈循环 + 引用完整性外键 |
+| 2 | 证据优先工作流 | Evidence Card + claim 追溯，Writer 只引用已入库证据 |
+| 3 | Git 一等公民 | auto commit + snapshot + stash，`auto:` 前缀区分 |
+| 4 | 人机协同审批门 | AskUserQuestion 实现 Approval Gates |
+| 5 | LaTeX 增量编译 | `draft_main.tex`(单章节) -> `main.tex`(全量) |
+| 6 | 可观测性与指标 | run_id + 8 项指标（文献/写作/编译/体验） |
+| 7 | 合规与 AI 披露 | 引用摘抄限制 + AI 声明可开关 |
+| 8 | 源码溯源注释 | `%% CLAIM_ID: EC-2026-XXX` 注释可追溯 |
+| 9 | Prompt 缓存架构 | 静态头部(schemas+证据卡) + 动态尾部(任务指令) |
 
 ## 技术栈决策
 
