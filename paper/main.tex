@@ -1,0 +1,47 @@
+\documentclass[UTF8, a4paper, 12pt, zihao=-4]{ctexart}
+
+% Page layout
+\usepackage[top=2.54cm, bottom=2.54cm, left=3.17cm, right=3.17cm]{geometry}
+
+% Math
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+% Graphics and tables
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+% Bibliography
+\usepackage[numbers,sort&compress]{natbib}
+
+% Hyperlinks (load last)
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+
+% Graphics path
+\graphicspath{{figures/}}
+
+\title{论文标题}
+\author{作者}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+摘要内容。
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/related-work}
+\input{sections/method}
+\input{sections/experiments}
+\input{sections/conclusion}
+
+\bibliographystyle{unsrtnat}
+\bibliography{bib/references}
+
+\input{sections/appendix}
+
+\end{document}
