@@ -59,15 +59,15 @@ def crosscheck_with_evidence_cards(
             except json.JSONDecodeError:
                 continue
 
-    all_claim_ids: list[str] = []
+    all_claim_ids: set[str] = set()
     for ids in claim_ids.values():
-        all_claim_ids.extend(ids)
+        all_claim_ids.update(ids)
 
-    orphan = [c for c in all_claim_ids if c not in card_ids]
-    missing = [c for c in card_ids if c not in set(all_claim_ids)] if card_ids else []
+    orphan = sorted(c for c in all_claim_ids if c not in card_ids)
+    missing = sorted(c for c in card_ids if c not in all_claim_ids) if card_ids else []
 
     return CitationAuditResult(
-        verified_count=len(set(all_claim_ids) & card_ids),
+        verified_count=len(all_claim_ids & card_ids),
         suspicious_keys=[],
         orphan_claims=orphan,
         missing_evidence_cards=missing,
