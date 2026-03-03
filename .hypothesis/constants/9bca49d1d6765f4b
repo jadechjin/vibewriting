@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\contracts\healers\regex_healer.py
+# hypothesis_version: 6.151.9
+
+['"', '"\\1"', '"\\bfnrtu/', "'([^']*)'", ',\\s*([}\\]])', '\\', '\\"', '\\1', '\\\\', '\\n?```\\s*$']

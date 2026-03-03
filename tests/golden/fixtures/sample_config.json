@@ -1,0 +1,5 @@
+{
+  "seed": 42,
+  "missing_strategy": "drop",
+  "float_precision": 6
+}

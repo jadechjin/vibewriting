@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\models\__init__.py
+# hypothesis_version: 6.151.9
+
+['AssetBase', 'BaseEntity', 'Experiment', 'Figure', 'Paper', 'Section', 'Table']

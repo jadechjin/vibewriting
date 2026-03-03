@@ -1,0 +1,119 @@
+{
+  "run_id": "a99e07e4",
+  "phase": "compilation",
+  "timestamp": "2026-03-03T05:00:12.034357+00:00",
+  "compilation": {
+    "success": true,
+    "pdf_path": "paper/build/main.pdf",
+    "pdf_size_bytes": 253781,
+    "pdf_pages": 14,
+    "first_pass_success": true,
+    "heal_rounds": 0,
+    "overfull_hboxes": 4,
+    "underfull_hboxes": 0,
+    "latex_errors": 0
+  },
+  "citation_audit": {
+    "total_cited_keys": 23,
+    "total_bib_entries": 23,
+    "undefined_references": 0,
+    "unused_references": 0,
+    "status": "PASS"
+  },
+  "evidence_cards": {
+    "total": 23,
+    "claims_in_tex": 90
+  },
+  "sections": [
+    {
+      "file": "sections\\appendix.tex",
+      "citations": 0,
+      "unique_cite_keys": 0,
+      "claims": 0,
+      "chinese_chars": 203,
+      "english_words": 144,
+      "lines": 57
+    },
+    {
+      "file": "sections\\conclusion.tex",
+      "citations": 20,
+      "unique_cite_keys": 18,
+      "claims": 19,
+      "chinese_chars": 1304,
+      "english_words": 173,
+      "lines": 87
+    },
+    {
+      "file": "sections\\experiments.tex",
+      "citations": 26,
+      "unique_cite_keys": 7,
+      "claims": 19,
+      "chinese_chars": 1406,
+      "english_words": 250,
+      "lines": 110
+    },
+    {
+      "file": "sections\\introduction.tex",
+      "citations": 12,
+      "unique_cite_keys": 8,
+      "claims": 9,
+      "chinese_chars": 889,
+      "english_words": 131,
+      "lines": 40
+    },
+    {
+      "file": "sections\\method.tex",
+      "citations": 24,
+      "unique_cite_keys": 14,
+      "claims": 24,
+      "chinese_chars": 1940,
+      "english_words": 195,
+      "lines": 117
+    },
+    {
+      "file": "sections\\related-work.tex",
+      "citations": 20,
+      "unique_cite_keys": 15,
+      "claims": 19,
+      "chinese_chars": 1046,
+      "english_words": 194,
+      "lines": 61
+    }
+  ],
+  "summary": {
+    "total_sections": 6,
+    "total_cite_invocations": 102,
+    "total_unique_cite_keys": 23,
+    "total_claim_annotations": 90,
+    "total_chinese_chars": 6788,
+    "total_words_approx": 7875,
+    "tables": 3,
+    "figures": 0,
+    "citation_coverage": 1.0,
+    "claim_traceability": 1.0
+  },
+  "peer_review": {
+    "score": 7.8,
+    "verdict": "Minor Revision",
+    "strengths": [
+      "文献覆盖全面，引用23篇近期高质量文献，包含Nature Catalysis、Angew. Chem.等顶级期刊",
+      "证据驱动写作规范，每个核心claim均有对应的证据卡（EC-ID）和文献引用",
+      "章节结构完整，从发展历程、典型材料、优化策略到实验成果有机衔接",
+      "性能对比表数据清晰，便于读者快速比较各体系",
+      "结论与展望部分提出了6个具体的未来研究方向，具有较高的指导价值"
+    ],
+    "weaknesses": [
+      "图表数量偏少（仅1张表格，无图），建议添加MOF光催化水分解机制示意图和性能趋势图",
+      "部分章节字数较多，建议适当拆分或图文结合",
+      "全分解水AQE数据（3.09%）与半反应AQY（10.0%）的差距可进一步定量分析",
+      "对产氧半反应动力学挑战的讨论可以更深入，四电子转移机制值得展开"
+    ],
+    "suggestions": [
+      "建议在引言后增加MOF光催化水分解基本原理示意图",
+      "可增加量子效率随年份变化的趋势图，直观展示领域进展",
+      "建议补充MOF稳定性测试标准的讨论"
+    ],
+    "overall": "本文系统综述了MOF材料在光催化水解产氢领域的最新研究进展，涵盖材料设计、优化策略和代表性实验成果。论文结构清晰，引用完整，内容翔实，建议补充图表后可接受发表。"
+  },
+  "contract_violations": 0
+}

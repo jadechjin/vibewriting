@@ -1,0 +1,24 @@
+\begin{table}[htbp]
+\centering
+{% if caption %}
+\caption{ {{- caption -}} }
+{% endif %}
+{% if label %}
+\label{ {{- label -}} }
+{% endif %}
+\begin{tabular}{ {{- 'l' * column_count -}} }
+\toprule
+{% for col in columns %}
+{{ col }}{% if not loop.last %} & {% endif %}
+{% endfor %}
+\\
+\midrule
+{% for row in rows %}
+{% for cell in row %}
+{{ cell }}{% if not loop.last %} & {% endif %}
+{% endfor %}
+\\
+{% endfor %}
+\bottomrule
+\end{tabular}
+\end{table}

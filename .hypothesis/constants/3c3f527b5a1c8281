@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\processing\cleaners.py
+# hypothesis_version: 6.151.9
+
+['drop', 'fill', 'interpolate', 'latin-1', 'utf-8']

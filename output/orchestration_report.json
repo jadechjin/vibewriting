@@ -1,0 +1,74 @@
+{
+  "orchestration_rounds": 1,
+  "sections_checked": 5,
+  "conflicts": [],
+  "warnings": [],
+  "citation_audit": {
+    "total_keys_in_bib": 23,
+    "missing_keys": [],
+    "orphan_keys": []
+  },
+  "terminology_consistency": {
+    "consistent": true,
+    "issues": []
+  },
+  "symbol_consistency": {
+    "consistent": true,
+    "issues": []
+  },
+  "cross_ref_integrity": {
+    "valid": true,
+    "issues": []
+  },
+  "quality_verdict": "PASS",
+  "word_counts": {
+    "introduction.tex": {
+      "chinese_chars": 887,
+      "english_words": 48
+    },
+    "related-work.tex": {
+      "chinese_chars": 988,
+      "english_words": 82
+    },
+    "method.tex": {
+      "chinese_chars": 1852,
+      "english_words": 88
+    },
+    "experiments.tex": {
+      "chinese_chars": 1330,
+      "english_words": 93
+    },
+    "conclusion.tex": {
+      "chinese_chars": 1189,
+      "english_words": 64
+    }
+  },
+  "total_claims_in_tex": 23,
+  "total_evidence_cards": 23,
+  "total_cited_keys": 23,
+  "all_cited_keys": [
+    "cfazn2025ows",
+    "chen2023mof_owsp_review",
+    "chen2024heterostructures_h2",
+    "coce_mof_2025",
+    "hassan2024emerging_trends",
+    "jiang2026mof_review",
+    "li2024mof_composites_h2",
+    "lin2025coupled_oxidation",
+    "liu2024three_ligand_timof",
+    "mof_fullspectrum_2025",
+    "mof_on_mof_owsp",
+    "mxene_mof_2024",
+    "ni_tbpy_2020",
+    "pmc2024mof_energy_env",
+    "reddy2021mof_h2_advances",
+    "rtta2024heterojunction",
+    "singh2025mini_review",
+    "uio66_mil88b_2024",
+    "wang2023p_doped_cn",
+    "wang2025mof_pec_review",
+    "yan2023donor_acceptor_mof",
+    "zhang2025optimization_strategies",
+    "zhou2023micropore_exciton"
+  ]
+}

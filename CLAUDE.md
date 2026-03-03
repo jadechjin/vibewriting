@@ -15,6 +15,7 @@
 - 参考文献: BibTeX + natbib (`\citep{}` / `\citet{}`)
 - Python: 3.12, uv, hatchling, src 布局
 - 图表: matplotlib pgf 后端（非 tikzplotlib）
+- 环境变量: `VW_` 前缀命名空间（如 `VW_DIFY_API_KEY`, `VW_RANDOM_SEED`）
 
 ## 工具与资源
 
@@ -36,9 +37,16 @@
 |------|------|
 | `paper/` | LaTeX 论文源码（main.tex + sections/ + bib/） |
 | `paper/build/` | 编译输出（gitignored） |
-| `src/vibewriting/` | Python 源码（processing / visualization / latex / models） |
+| `src/vibewriting/models/` | Pydantic 数据模型（Paper, Experiment, Figure, Table, Section, EvidenceCard） |
+| `src/vibewriting/contracts/` | 阶段产物契约（Schema 导出 + 自愈验证 + 引用完整性） |
+| `src/vibewriting/processing/` | 数据清洗、转换、统计分析 |
+| `src/vibewriting/visualization/` | 图表生成（matplotlib）+ LaTeX 表格（jinja2）+ PGF 导出 |
+| `src/vibewriting/pipeline/` | DAG 管线编排 + CLI 入口 |
+| `src/vibewriting/literature/` | 文献整合工作流（检索 + 去重 + 证据卡 + BibTeX 管理） |
+| `src/vibewriting/latex/` | LaTeX 编译工具（待实现） |
 | `data/raw/` | 原始数据（大文件 gitignored） |
 | `data/processed/` | 清洗后数据 |
+| `data/processed/literature/` | 证据卡缓存（literature_cards.jsonl） |
 | `output/figures/` | 生成的图表（.pdf/.pgf/.png） |
 | `output/tables/` | 生成的 LaTeX 表格（.tex） |
 | `scripts/` | 工具脚本（validate_env.py, dify-kb-mcp/） |
@@ -51,6 +59,13 @@ bash build.sh watch       # 监视模式
 bash build.sh clean       # 清理构建产物
 bash build.sh check       # 运行 checkcites
 bash build.sh doi2bib DOI # DOI 转 BibTeX
+```
+
+### 数据管线
+
+```bash
+uv run python -m vibewriting.pipeline.cli run --data-dir data/raw --output-dir output --seed 42
+uv run python -m vibewriting.contracts.schema_export   # 导出 JSON Schema
 ```
 
 ## 验证标准与工作流纪律

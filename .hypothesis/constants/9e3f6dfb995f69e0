@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\writing\latex_helpers.py
+# hypothesis_version: 6.151.9
+
+['(?<!%)%(?!%).*$', '[{}\\\\]', '\\\\label\\{([^}]+)\\}', '\\n\\s*\\n', 'citep', 'citet', 'fig:', 'tab:']

@@ -29,6 +29,7 @@ dist/
 
 # Environment
 .env
+.mcp.json
 
 # Data large files
 data/raw/*.csv

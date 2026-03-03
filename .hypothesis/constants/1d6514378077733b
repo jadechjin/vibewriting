@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\pipeline\nodes.py
+# hypothesis_version: 6.151.9
+
+['*.csv', 'asset_count', 'asset_id', 'asset_manifest.json', 'asset_manifest_path', 'assets', 'caption', 'cleaned_data', 'column', 'content_hash', 'count', 'data_dir', 'drop', 'figure', 'figure_results', 'figures', 'float_precision', 'kind', 'label', 'missing_strategy', 'output_dir', 'path', 'raw', 'raw_data', 'run_id', 'run_manifest.json', 'run_manifest_path', 'seed', 'semantic_description', 'statistics', 'table', 'table_results', 'tables', 'timestamp', 'title', 'transformed_data', 'utf-8', 'validation_passed', 'x_col', 'x_label', 'y_col', 'y_label']

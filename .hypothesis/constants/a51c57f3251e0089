@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\models\paper.py
+# hypothesis_version: 6.151.9
+
+['^[a-zA-Z0-9_:\\-]+$', 'forbid']

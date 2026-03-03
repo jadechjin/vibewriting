@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\review\citation_audit.py
+# hypothesis_version: 6.151.9
+
+[200, '*.tex', ',', '=> ', '@\\w+\\{([^,]+),', 'Undefined references', 'Unused references', 'User-Agent', 'checkcites', 'claim_id', 'undefined', 'unused', 'utf-8', 'vibewriting/1.0']

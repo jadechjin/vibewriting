@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\latex\log_parser.py
+# hypothesis_version: 6.151.9
+
+[-500, 300, '!', '! ', '\\(([^\\s()]+\\.\\w+)', '^! (.+)$', '^! Missing (.+)\\.', 'cant_find_file', 'encoding_error', 'file_not_found', 'generic_error', 'l\\.(\\d+)', 'latex_error', 'missing_file', 'missing_package', 'missing_token', 'package_error', 'syntax_error', 'undefined_control', 'undefined_reference', 'unknown']

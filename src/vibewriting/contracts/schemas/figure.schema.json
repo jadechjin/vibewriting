@@ -1,0 +1,90 @@
+{
+  "additionalProperties": false,
+  "description": "Figure asset with chart metadata.",
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "asset_id": {
+      "pattern": "^ASSET-\\d{4}-\\d{3,}$",
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "kind": {
+      "const": "figure",
+      "default": "figure",
+      "title": "Kind",
+      "type": "string"
+    },
+    "path": {
+      "title": "Path",
+      "type": "string"
+    },
+    "content_hash": {
+      "title": "Content Hash",
+      "type": "string"
+    },
+    "semantic_description": {
+      "title": "Semantic Description",
+      "type": "string"
+    },
+    "generator_version": {
+      "title": "Generator Version",
+      "type": "string"
+    },
+    "chart_type": {
+      "enum": [
+        "line",
+        "bar",
+        "scatter",
+        "heatmap"
+      ],
+      "title": "Chart Type",
+      "type": "string"
+    },
+    "data_source": {
+      "title": "Data Source",
+      "type": "string"
+    },
+    "x_label": {
+      "title": "X Label",
+      "type": "string"
+    },
+    "y_label": {
+      "title": "Y Label",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "asset_id",
+    "path",
+    "content_hash",
+    "semantic_description",
+    "generator_version",
+    "chart_type",
+    "data_source",
+    "x_label",
+    "y_label"
+  ],
+  "title": "Figure",
+  "type": "object"
+}

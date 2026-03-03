@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\config.py
+# hypothesis_version: 6.151.9
+
+[0.9, 120, '.env', 'VW_', 'compile_max_retries', 'compile_timeout_sec', 'data', 'dedup_threshold', 'enable_ai_disclosure', 'float_precision', 'ignore', 'output', 'paper', 'random_seed']

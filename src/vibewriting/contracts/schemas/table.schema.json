@@ -1,0 +1,82 @@
+{
+  "additionalProperties": false,
+  "description": "Table asset with column metadata.",
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "asset_id": {
+      "pattern": "^ASSET-\\d{4}-\\d{3,}$",
+      "title": "Asset Id",
+      "type": "string"
+    },
+    "kind": {
+      "const": "table",
+      "default": "table",
+      "title": "Kind",
+      "type": "string"
+    },
+    "path": {
+      "title": "Path",
+      "type": "string"
+    },
+    "content_hash": {
+      "title": "Content Hash",
+      "type": "string"
+    },
+    "semantic_description": {
+      "title": "Semantic Description",
+      "type": "string"
+    },
+    "generator_version": {
+      "title": "Generator Version",
+      "type": "string"
+    },
+    "columns": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Columns",
+      "type": "array"
+    },
+    "row_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Row Count",
+      "type": "integer"
+    },
+    "template_name": {
+      "default": "",
+      "title": "Template Name",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "asset_id",
+    "path",
+    "content_hash",
+    "semantic_description",
+    "generator_version"
+  ],
+  "title": "Table",
+  "type": "object"
+}

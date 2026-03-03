@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\contracts\integrity.py
+# hypothesis_version: 6.151.9
+
+['<unknown>', '@\\w+\\{([^,]+),', 'asset_id', 'asset_ids', 'asset_manifest', 'citation_key', 'citation_keys', 'claim_id', 'claim_ids', 'entries', 'evidence_cards', 'glossary', 'paper_state:sections', 'references.bib', 'section_id', 'sections', 'symbol_id', 'symbol_ids', 'symbols', 'term_id', 'term_ids', 'utf-8']

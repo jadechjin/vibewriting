@@ -1,6 +1,7 @@
 $pdf_mode = 5;
 $xelatex = 'xelatex -file-line-error -interaction=nonstopmode -synctex=1 %O %S';
 $bibtex = 'bibtex %O %B';
+$bibtex_use = 2;
 $out_dir = 'build';
 $aux_dir = 'build';
 $max_repeat = 5;

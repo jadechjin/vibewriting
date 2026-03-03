@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\latex\compiler.py
+# hypothesis_version: 6.151.9
+
+[200, '-halt-on-error', '-xelatex', 'Compile round %d/%d', 'build', 'latexmk', 'main.log', 'main.tex', 'none', 'patch_report.json', 'replace', 'unparseable', 'utf-8']

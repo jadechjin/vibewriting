@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\literature\search.py
+# hypothesis_version: 6.151.9
+
+[0.9, 100, ',', 'abstract', 'arxiv_id', 'authors', 'bibtex', 'content', 'dify-kb', 'doi', 'export_results', 'headless', 'json', 'metadata', 'paper-search', 'pmid', 'results', 'retrieve_knowledge', 'search_papers', 'session_id', 'title', 'year']

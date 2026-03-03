@@ -1,0 +1,60 @@
+# vibewriting 论文配置文件
+# 所有字段均有默认值，仅需填写必要项
+
+# 论文主题（必填）
+topic: "请填写论文主题"
+
+# 输出语言：zh（中文）或 en（英文）
+language: zh
+
+# LaTeX 文档类（中文论文用 ctexart，英文用 article）
+document_class: ctexart
+
+# 章节列表（按顺序排列）
+sections:
+  - 引言
+  - 相关工作
+  - 方法
+  - 实验
+  - 结论
+
+# 文献检索轮数（每轮调用一次 paper-search MCP）
+literature_query_count: 3
+
+# 最少证据卡数量（低于此数量时写作流程会警告）
+min_evidence_cards: 5
+
+# 原始数据目录（可选，留空则使用默认 data/raw）
+data_dir: null
+
+# 随机种子（保证科研可复现性）
+random_seed: 42
+
+# 写作模式：single（单 Agent）或 multi（多 Agent 并行）
+writing_mode: multi
+
+# 是否在论文末尾插入 AI 使用声明
+enable_ai_disclosure: false
+
+# 是否启用匿名化处理（投稿双盲评审时使用）
+enable_anonymize: false
+
+# natbib 引用风格（plainnat / abbrvnat / unsrtnat）
+natbib_style: unsrtnat
+
+# 跳过所有 Approval Gates（危险！仅用于自动化测试）
+auto_approve: false
+
+# --- 管线配置（从 .env 迁移的非敏感字段） ---
+
+# 浮点精度（统计输出小数位数）
+float_precision: 6
+
+# 文献去重阈值（0.0-1.0，Jaccard 相似度）
+dedup_threshold: 0.9
+
+# LaTeX 编译最大重试次数
+compile_max_retries: 5
+
+# LaTeX 编译超时时间（秒）
+compile_timeout_sec: 120

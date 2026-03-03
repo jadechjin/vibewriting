@@ -123,21 +123,21 @@ def check_env_file() -> CheckResult:
 
 
 def check_dify_credentials() -> CheckResult:
-    key = os.environ.get("DIFY_API_KEY", "")
+    key = os.environ.get("VW_DIFY_API_KEY", "")
     if not key:
         env_path = PROJECT_ROOT / ".env"
         if env_path.exists():
             for line in env_path.read_text(encoding="utf-8").splitlines():
                 line = line.strip()
-                if line.startswith("DIFY_API_KEY=") and line.split("=", 1)[1].strip():
+                if line.startswith("VW_DIFY_API_KEY=") and line.split("=", 1)[1].strip():
                     key = "configured"
                     break
     if key:
-        return CheckResult("dify_credentials", "pass", "optional", "DIFY_API_KEY configured")
+        return CheckResult("dify_credentials", "pass", "optional", "VW_DIFY_API_KEY configured")
     return CheckResult(
         "dify_credentials", "blocked", "optional",
-        "DIFY_API_KEY not set (Dify knowledge base unavailable)",
-        "Set DIFY_API_KEY in .env file",
+        "VW_DIFY_API_KEY not set (Dify knowledge base unavailable)",
+        "Set VW_DIFY_API_KEY in .env file",
     )
 
 

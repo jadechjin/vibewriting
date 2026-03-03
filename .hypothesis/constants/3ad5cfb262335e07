@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\metrics.py
+# hypothesis_version: 6.151.9
+
+[0.0, 1.0, 'citation_coverage', 'claim_ids', 'claim_traceability', 'completed_at', 'contract_violations', 'first_pass_success', 'forbid', 'heal_rounds', 'heal_success', 'literature', 'metrics', 'paper_state.json', 'peer_review_score', 'peer_review_verdict', 'phase6_report.json', 'phases', 'processed', 'retrieval_source', 'run_metrics.json', 'sections', 'source_query', 'started_at', 'tags', 'total_duration_sec', 'unknown', 'utf-8', 'word_count']

@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\models\paper_state.py
+# hypothesis_version: 6.151.9
+
+[0.0, 1.0, 'complete', 'drafted', 'drafting', 'forbid', 'outline', 'planned', 'review', 'reviewed']

@@ -1,0 +1,96 @@
+{
+  "overall_score": 2.0,
+  "verdict": "Reject",
+  "summary": "Review found 10 issues: 0 critical, 3 major, 7 minor",
+  "strengths": [
+    "No critical issues found"
+  ],
+  "weaknesses": [
+    "Missing required section: methodology",
+    "Missing required section: abstract",
+    "Missing required section: results"
+  ],
+  "detailed_findings": [
+    {
+      "severity": "MAJOR",
+      "category": "STRUCTURE",
+      "location": "paper_state",
+      "issue": "Missing required section: methodology",
+      "rationale": "A complete paper must include a methodology section",
+      "suggestion": ""
+    },
+    {
+      "severity": "MAJOR",
+      "category": "STRUCTURE",
+      "location": "paper_state",
+      "issue": "Missing required section: abstract",
+      "rationale": "A complete paper must include a abstract section",
+      "suggestion": ""
+    },
+    {
+      "severity": "MAJOR",
+      "category": "STRUCTURE",
+      "location": "paper_state",
+      "issue": "Missing required section: results",
+      "rationale": "A complete paper must include a results section",
+      "suggestion": ""
+    },
+    {
+      "severity": "MINOR",
+      "category": "STRUCTURE",
+      "location": "section:introduction",
+      "issue": "Section status is 'drafted', not 'complete'",
+      "rationale": "All sections should be finalized before submission",
+      "suggestion": ""
+    },
+    {
+      "severity": "MINOR",
+      "category": "STRUCTURE",
+      "location": "section:related-work",
+      "issue": "Section status is 'drafted', not 'complete'",
+      "rationale": "All sections should be finalized before submission",
+      "suggestion": ""
+    },
+    {
+      "severity": "MINOR",
+      "category": "STRUCTURE",
+      "location": "section:method",
+      "issue": "Section status is 'drafted', not 'complete'",
+      "rationale": "All sections should be finalized before submission",
+      "suggestion": ""
+    },
+    {
+      "severity": "MINOR",
+      "category": "STRUCTURE",
+      "location": "section:experiments",
+      "issue": "Section status is 'drafted', not 'complete'",
+      "rationale": "All sections should be finalized before submission",
+      "suggestion": ""
+    },
+    {
+      "severity": "MINOR",
+      "category": "STRUCTURE",
+      "location": "section:conclusion",
+      "issue": "Section status is 'drafted', not 'complete'",
+      "rationale": "All sections should be finalized before submission",
+      "suggestion": ""
+    },
+    {
+      "severity": "MINOR",
+      "category": "STRUCTURE",
+      "location": "section:appendix",
+      "issue": "Section status is 'drafted', not 'complete'",
+      "rationale": "All sections should be finalized before submission",
+      "suggestion": ""
+    },
+    {
+      "severity": "MINOR",
+      "category": "METHODOLOGY",
+      "location": "paper_dir",
+      "issue": "No mathematical equations found",
+      "rationale": "Methodology sections typically include formal definitions",
+      "suggestion": "Consider adding equations for key algorithms or models"
+    }
+  ],
+  "consistency_check": {}
+}

@@ -1,3 +1,61 @@
-\section{相关工作}
+\section{研究背景与相关工作}\label{sec:related-work}
 
-待补充。
+% --- 2.1 MOF光催化的发展历程 ---
+
+\subsection{MOF光催化水分解的发展历程}
+
+MOF材料在光催化领域的应用始于21世纪初期。
+早期研究主要关注MOF的光学性质表征和简单光降解反应。 %% NO_CITE: common knowledge
+2010年，研究者首次报道了MOF材料在光催化产氢反应中的应用，开创了MOF光催化水分解研究的先河~\citep{chen2023mof_owsp_review}。 %% CLAIM_ID: EC-2026-001
+此后，MOF光催化产氢的研究呈现爆发式增长态势。
+
+2017年，全分解水反应在MOF基催化剂上首次实现，这一突破性进展证明了MOF材料同时驱动产氢和产氧反应的可行性~\citep{chen2023mof_owsp_review}。 %% CLAIM_ID: EC-2026-001
+然而，至今为止，绝大多数MOF光催化研究仍聚焦于产氢半反应，全分解水的报道相对稀少~\citep{chen2023mof_owsp_review,mof_on_mof_owsp}。 %% CLAIM_ID: EC-2026-002
+产氧半反应动力学缓慢、四电子转移过程复杂、以及对催化剂氧化稳定性要求极高，是制约全分解水发展的主要因素~\citep{mof_on_mof_owsp}。 %% CLAIM_ID: EC-2026-016
+
+% --- 2.2 主要MOF类型 ---
+
+\subsection{光催化水分解中的典型MOF类型}
+
+在众多MOF材料中，以下几类在光催化水分解领域得到了广泛研究：
+
+\textbf{UiO系列。}
+UiO-66及其衍生物以锆基金属簇（$\mathrm{Zr_6O_4(OH)_4}$）为节点，具有出色的热稳定性和化学稳定性。 %% NO_CITE: common knowledge
+UiO-66的带隙约为$3.5~\mathrm{eV}$，主要响应紫外光区域。
+通过氨基功能化（UiO-66-NH$_2$）可将吸收边红移至可见光区域，显著提升光催化活性~\citep{li2024mof_composites_h2}。 %% CLAIM_ID: EC-2026-008
+近期研究中，UiO-66@MIL-88B异质外延结构实现了Z-scheme全分解水~\citep{uio66_mil88b_2024}。 %% CLAIM_ID: EC-2026-004
+
+\textbf{MIL系列。}
+MIL系列（Mat\'{e}riaux de l'Institut Lavoisier）涵盖多种金属中心（Fe、Al、Cr、Ti等）。
+MIL-125(Ti)及其氨基功能化衍生物（NH$_2$-MIL-125）因钛氧簇的光响应特性，被广泛用于光催化产氢~\citep{hassan2024emerging_trends}。 %% CLAIM_ID: EC-2026-013
+MIL-88B(Fe)则以铁基金属簇为特征，在可见光驱动光催化中表现出潜力~\citep{uio66_mil88b_2024}。 %% CLAIM_ID: EC-2026-004
+
+\textbf{Ti-MOF系列。}
+钛基MOF因Ti-O簇的优异光响应特性，在光催化产氢领域受到持续关注。
+\citet{liu2024three_ligand_timof}发展的三配体Ti-MOF体系通过精细调控LMCT能力，实现了产氢速率的显著提升，展示了Ti-MOF在配体工程方面的独特潜力。 %% CLAIM_ID: EC-2026-020
+
+\textbf{ZIF系列。}
+沸石咪唑酯框架（ZIF）以Zn$^{2+}$或Co$^{2+}$与咪唑类配体构建。
+ZIF-8（Zn基）具有高稳定性但带隙较宽（约$5.0~\mathrm{eV}$），通常作为复合材料的载体或前驱体使用。 %% NO_CITE: common knowledge
+ZIF-67（Co基）可见光吸收性能较好，且易于热转化为碳基钴催化剂~\citep{singh2025mini_review}。 %% CLAIM_ID: EC-2026-017
+
+\textbf{其他新型MOF与类MOF材料。}
+近年来，基于镍的二维MOF纳米带（如Ni-TBAPy）展现了优异的光催化产氢活性，表观量子效率达$8.0\%$~\citep{ni_tbpy_2020}。 %% CLAIM_ID: EC-2026-010
+含铈MOF（Ce-MOF）在含盐水条件下实现了高达$420.8~\mathrm{mmol \cdot h^{-1} \cdot g^{-1}}$的产氢速率~\citep{coce_mof_2025}。 %% CLAIM_ID: EC-2026-009
+供体-受体型MOF通过分子内电荷转移实现了光生载流子的高效分离~\citep{yan2023donor_acceptor_mof}。 %% CLAIM_ID: EC-2026-021
+此外，氢键有机框架（HOF）中微孔限域激子转移主导的光催化产氢机制也被揭示~\citep{zhou2023micropore_exciton}。 %% CLAIM_ID: EC-2026-022
+这些新型材料的涌现极大丰富了光催化水分解的材料体系。
+
+% --- 2.3 MOF与传统光催化剂的比较 ---
+
+\subsection{MOF与传统光催化剂的比较}
+
+与传统无机半导体光催化剂（如TiO$_2$、CdS、g-C$_3$N$_4$）相比，MOF材料在结构可设计性和功能可调性方面具有显著优势~\citep{pmc2024mof_energy_env}。
+传统半导体材料的能带结构和表面性质调控手段有限，而MOF可通过更换金属节点、修饰有机配体、调节孔道结构等多维度进行精确调控。 %% NO_CITE: common knowledge
+此外，MOF的超高比表面积为活性位点的暴露和底物分子的吸附提供了天然优势~\citep{reddy2021mof_h2_advances}。 %% CLAIM_ID: EC-2026-019
+
+然而，MOF材料也面临独特挑战。
+\citet{hassan2024emerging_trends}指出，部分MOF在水溶液和光照条件下的结构稳定性不足，限制了其实际应用。 %% CLAIM_ID: EC-2026-013
+\citet{wang2025mof_pec_review}在光电催化领域的综述中进一步强调，MOF基体系在效率和成本方面仍需突破。 %% CLAIM_ID: EC-2026-005
+近期，MOF衍生材料（通过热解或化学转化获得的金属氧化物、碳材料和复合物）作为"后MOF"策略引起关注，兼具MOF前驱体的结构优势和无机材料的稳定性~\citep{singh2025mini_review}。 %% CLAIM_ID: EC-2026-017
+与此同时，原位质子化磷间隙掺杂等策略也被用于调控MOF/g-C$_3$N$_4$复合体系的电子结构~\citep{wang2023p_doped_cn}。 %% CLAIM_ID: EC-2026-023

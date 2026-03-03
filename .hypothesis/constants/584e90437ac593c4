@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\models\section.py
+# hypothesis_version: 6.151.9
+
+['complete', 'draft', 'forbid', 'review']

@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\review\models.py
+# hypothesis_version: 6.151.9
+
+['Accept', 'CITATION', 'CRITICAL', 'EVIDENCE', 'LANGUAGE', 'MAJOR', 'METHODOLOGY', 'MINOR', 'Major Revision', 'Minor Revision', 'Reject', 'STRUCTURE', 'SUGGESTION', 'forbid']

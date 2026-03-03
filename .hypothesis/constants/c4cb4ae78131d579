@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\review\peer_review.py
+# hypothesis_version: 6.151.9
+
+[0.0, 0.5, 1.5, 3.0, 10.0, '## Detailed Findings', '## Weaknesses', '*.tex', 'Accept', 'Major Revision', 'Minor Revision', 'Reject', 'abstract', 'asset_manifest', 'claim_id', 'complete', 'conclusion', 'empirical', 'evidence_cards', 'evidence_type', 'introduction', 'methodology', 'paper_dir', 'paper_state', 'peer_review.json', 'peer_review.md', 'results', 'section_id', 'sections', 'status', 'survey', 'unknown', 'utf-8']

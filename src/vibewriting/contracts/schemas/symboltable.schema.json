@@ -1,0 +1,54 @@
+{
+  "$defs": {
+    "SymbolEntry": {
+      "additionalProperties": false,
+      "description": "A single symbol definition in the symbol table.",
+      "properties": {
+        "symbol": {
+          "minLength": 1,
+          "title": "Symbol",
+          "type": "string"
+        },
+        "meaning": {
+          "minLength": 1,
+          "title": "Meaning",
+          "type": "string"
+        },
+        "first_used_in": {
+          "default": "",
+          "title": "First Used In",
+          "type": "string"
+        },
+        "latex_command": {
+          "default": "",
+          "title": "Latex Command",
+          "type": "string"
+        }
+      },
+      "required": [
+        "symbol",
+        "meaning"
+      ],
+      "title": "SymbolEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Symbol table for cross-section mathematical notation consistency.\n\nAll mutating operations return a new SymbolTable instance (immutable pattern).",
+  "properties": {
+    "entries": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SymbolEntry"
+      },
+      "title": "Entries",
+      "type": "object"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "title": "SymbolTable",
+  "type": "object"
+}

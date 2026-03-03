@@ -3,6 +3,7 @@
 # dependencies = [
 #   "mcp[cli]>=1.0",
 #   "httpx>=0.27",
+#   "python-dotenv>=1.0",
 # ]
 # ///
 """Dify Knowledge Base MCP Bridge Server.
@@ -16,9 +17,15 @@ from __future__ import annotations
 
 import logging
 import os
+from pathlib import Path
 
 import httpx
+from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
+
+# Load .env from project root as fallback (MCP env interpolation may fail)
+_project_root = Path(__file__).resolve().parent.parent.parent
+load_dotenv(_project_root / ".env", override=False)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,9 +33,46 @@ logging.basicConfig(
 )
 logger = logging.getLogger("dify-kb-mcp")
 
-DIFY_API_BASE_URL = os.environ.get("DIFY_API_BASE_URL", "").rstrip("/")
-DIFY_API_KEY = os.environ.get("DIFY_API_KEY", "")
-DIFY_DATASET_ID = os.environ.get("DIFY_DATASET_ID", "")
+# ---------------------------------------------------------------------------
+# Environment variable resolution with ${...} literal filtering
+# ---------------------------------------------------------------------------
+# Claude Code MCP env interpolation (e.g. "${VW_DIFY_API_BASE_URL}") may
+# leave the literal "${...}" string when the variable is absent from the
+# host process environment (known bugs: anthropics/claude-code#9427, #1254,
+# #14032, #28090).  The helper below treats such literals as missing.
+
+
+def _resolve_env(key: str) -> str | None:
+    """Return env value for *key*, or ``None`` if missing / unresolved.
+
+    Values that look like unresolved ``${...}`` interpolation placeholders
+    (start with ``${`` and contain ``}``) are treated as missing so that the
+    fallback chain can proceed.
+    """
+    value = os.environ.get(key)
+    if not value:
+        return None
+    if value.startswith("${") and "}" in value:
+        return None
+    return value
+
+
+# Fallback chain: DIFY_* (from .mcp.json env) -> VW_DIFY_* (from .env)
+DIFY_API_BASE_URL = (
+    _resolve_env("DIFY_API_BASE_URL")
+    or _resolve_env("VW_DIFY_API_BASE_URL")
+    or ""
+).rstrip("/")
+DIFY_API_KEY = (
+    _resolve_env("DIFY_API_KEY")
+    or _resolve_env("VW_DIFY_API_KEY")
+    or ""
+)
+DIFY_DATASET_ID = (
+    _resolve_env("DIFY_DATASET_ID")
+    or _resolve_env("VW_DIFY_DATASET_ID")
+    or ""
+)
 try:
     MAX_RETRIES = max(1, int(os.environ.get("DIFY_MAX_RETRIES", "3")))
 except (ValueError, TypeError):
@@ -38,24 +82,30 @@ try:
 except (ValueError, TypeError):
     TIMEOUT = 30.0
 
-VALID_SEARCH_METHODS = ("hybrid_search", "keyword_search", "semantic_search")
-
 mcp = FastMCP("dify-knowledge")
 
 
 def _check_credentials() -> str | None:
-    """Return error message if credentials are missing, None if OK."""
+    """Return error message if credentials are missing or malformed, None if OK."""
     missing = []
     if not DIFY_API_BASE_URL:
-        missing.append("DIFY_API_BASE_URL")
+        missing.append("DIFY_API_BASE_URL (or VW_DIFY_API_BASE_URL)")
     if not DIFY_API_KEY:
-        missing.append("DIFY_API_KEY")
+        missing.append("DIFY_API_KEY (or VW_DIFY_API_KEY)")
     if not DIFY_DATASET_ID:
-        missing.append("DIFY_DATASET_ID")
+        missing.append("DIFY_DATASET_ID (or VW_DIFY_DATASET_ID)")
     if missing:
         return (
             f"Dify credentials not configured: {', '.join(missing)}. "
-            "Set these environment variables in .env file."
+            "Set these variables in .env (VW_DIFY_API_BASE_URL, "
+            "VW_DIFY_API_KEY, VW_DIFY_DATASET_ID)."
+        )
+    if not DIFY_API_BASE_URL.startswith(("http://", "https://")):
+        return (
+            f"DIFY_API_BASE_URL is invalid: '{DIFY_API_BASE_URL}'. "
+            "Value must start with http:// or https://. "
+            "Check that VW_DIFY_API_BASE_URL is correctly set in .env "
+            "(e.g. https://api.dify.ai/v1)."
         )
     return None
 
@@ -101,46 +151,25 @@ async def _dify_request(method: str, path: str, **kwargs: object) -> dict:
 @mcp.tool()
 async def retrieve_knowledge(
     query: str,
-    top_k: int = 5,
-    search_method: str = "hybrid_search",
-    score_threshold: float = 0.5,
 ) -> dict:
     """Search the Dify knowledge base for documents relevant to a query.
 
+    Uses the knowledge base's default retrieval settings configured in Dify.
+
     Args:
         query: Search query text
-        top_k: Number of results to return (default: 5)
-        search_method: One of hybrid_search, keyword_search, semantic_search
-        score_threshold: Minimum relevance score (default: 0.5)
     """
     cred_error = _check_credentials()
     if cred_error:
         return {"error": True, "message": cred_error}
 
-    if search_method not in VALID_SEARCH_METHODS:
-        return {
-            "error": True,
-            "message": (
-                f"Invalid search_method: {search_method}. "
-                f"Use one of: {', '.join(VALID_SEARCH_METHODS)}."
-            ),
-        }
-
     try:
         payload = {
             "query": query,
-            "retrieval_model": {
-                "search_method": search_method,
-                "reranking_enable": True,
-                "reranking_mode": "reranking_model",
-                "top_k": top_k,
-                "score_threshold_enabled": True,
-                "score_threshold": score_threshold,
-            },
         }
         result = await _dify_request(
             "POST",
-            f"/v1/datasets/{DIFY_DATASET_ID}/retrieve",
+            f"/datasets/{DIFY_DATASET_ID}/retrieve",
             json=payload,
         )
         return {"error": False, "records": result.get("records", [])}
@@ -178,7 +207,7 @@ async def list_documents(
             params["keyword"] = keyword
         result = await _dify_request(
             "GET",
-            f"/v1/datasets/{DIFY_DATASET_ID}/documents",
+            f"/datasets/{DIFY_DATASET_ID}/documents",
             params=params,
         )
         return {

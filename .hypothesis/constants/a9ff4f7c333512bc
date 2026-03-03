@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\writing\quality_gates.py
+# hypothesis_version: 6.151.9
+
+[0.0, 0.3, 0.5, 1.0, '%%\\s*NO_CITE:', ',', 'No paragraphs found.', '\\\\label\\{([^}]+)\\}', '\\n\\s*\\n', 'appendix', 'asset_coverage', 'citation_coverage', 'claim_traceability', 'conclusion', 'cross_ref_integrity', 'experiments', 'fig:', 'introduction', 'method', 'related-work', 'tab:']

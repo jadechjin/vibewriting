@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\pipeline\cli.py
+# hypothesis_version: 6.151.9
+
+['__main__', 'build_manifests', 'clean_data', 'compute_statistics', 'data_dir', 'generate_figures', 'generate_tables', 'load_data', 'output_dir', 'raw', 'seed', 'transform_data', 'validate_contracts']

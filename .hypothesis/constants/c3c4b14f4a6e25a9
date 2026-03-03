@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\latex\__init__.py
+# hypothesis_version: 6.151.9
+
+['ErrorKind', 'LatexError', 'PatchProposal', 'classify_error', 'compile_full', 'parse_log', 'run_self_heal_loop', 'write_patch_reports']

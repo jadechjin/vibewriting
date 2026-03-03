@@ -1,0 +1,40 @@
+{
+  "entries": [
+    {
+      "symbol": "\\Delta G",
+      "meaning": "吉布斯自由能变",
+      "unit": "kJ/mol",
+      "first_section": "introduction"
+    },
+    {
+      "symbol": "\\mathrm{H_2}",
+      "meaning": "氢气",
+      "unit": "",
+      "first_section": "introduction"
+    },
+    {
+      "symbol": "\\mathrm{O_2}",
+      "meaning": "氧气",
+      "unit": "",
+      "first_section": "introduction"
+    },
+    {
+      "symbol": "\\mathrm{eV}",
+      "meaning": "电子伏特",
+      "unit": "能量单位",
+      "first_section": "introduction"
+    },
+    {
+      "symbol": "\\mathrm{m^2/g}",
+      "meaning": "比表面积单位",
+      "unit": "",
+      "first_section": "introduction"
+    },
+    {
+      "symbol": "\\mu\\mathrm{mol/h}",
+      "meaning": "产氢速率单位",
+      "unit": "",
+      "first_section": "experiments"
+    }
+  ]
+}

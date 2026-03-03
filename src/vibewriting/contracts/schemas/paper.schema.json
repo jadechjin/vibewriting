@@ -1,0 +1,70 @@
+{
+  "additionalProperties": false,
+  "description": "Academic paper metadata.",
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "tags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "authors": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Authors",
+      "type": "array"
+    },
+    "abstract": {
+      "title": "Abstract",
+      "type": "string"
+    },
+    "bib_key": {
+      "pattern": "^[a-zA-Z0-9_:\\-]+$",
+      "title": "Bib Key",
+      "type": "string"
+    },
+    "quality_score": {
+      "maximum": 10,
+      "minimum": 0,
+      "title": "Quality Score",
+      "type": "number"
+    },
+    "sections": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Sections",
+      "type": "array"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "authors",
+    "abstract",
+    "bib_key",
+    "quality_score"
+  ],
+  "title": "Paper",
+  "type": "object"
+}

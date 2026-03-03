@@ -1,0 +1,12 @@
+# Prevent stale artifacts from direct xelatex compilation.
+# Always use `bash build.sh build` — correct output is paper/build/main.pdf
+main.pdf
+main.aux
+main.log
+main.out
+main.synctex.gz
+main.xdv
+main.bbl
+main.blg
+main.fls
+main.fdb_latexmk

@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\latex\patch_guard.py
+# hypothesis_version: 6.151.9
+
+['.tex', '.tex.tmp', 'sections', 'utf-8', 'w']

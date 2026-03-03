@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\visualization\pgf_export.py
+# hypothesis_version: 6.151.9
+
+['.pdf', '.pgf', 'font.family', 'pgf.rcfonts', 'pgf.texsystem', 'serif', 'text.usetex', 'tight', 'xelatex']

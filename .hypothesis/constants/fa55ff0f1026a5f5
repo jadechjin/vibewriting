@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\agents\merge_protocol.py
+# hypothesis_version: 6.151.9
+
+[',', ',\\s*,', ',\\s*\\}', '\\\\cite[pt]\\{\\s*,', '\\\\citep{', 'citation', 'glossary', 'missing', 'narrative', 'symbol', 'symbol_table', 'terminology', '}']

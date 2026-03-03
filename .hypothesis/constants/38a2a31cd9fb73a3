@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\contracts\full_integrity.py
+# hypothesis_version: 6.151.9
+
+['*.tex', ',', '<empty>', '<unknown>', 'asset_id', 'citation_key', 'complete', 'content_hash', 'entries', 'expected:complete', 'file_path', 'glossary', 'latex', 'output_dir', 'references.bib', 'section_id', 'sections', 'status', 'symbols', 'term', 'tex_files', 'utf-8']

@@ -64,7 +64,7 @@ OPENAI_API_KEY=         # OpenAI API 密钥
 - **位置**: `scripts/dify-kb-mcp/server.py`（项目内）
 - **传输**: stdio
 - **启动**: `uv run scripts/dify-kb-mcp/server.py`（PEP 723 内联依赖）
-- **依赖**: `mcp[cli]>=1.0`, `httpx>=0.27`
+- **依赖**: `mcp[cli]>=1.0`, `httpx>=0.27`, `python-dotenv>=1.0`
 
 ### 工具清单
 
@@ -82,13 +82,29 @@ OPENAI_API_KEY=         # OpenAI API 密钥
 ### 环境变量
 
 ```bash
-# .env 中配置
-DIFY_API_BASE_URL=https://api.dify.ai/v1   # Dify API 地址
-DIFY_API_KEY=                                # Dify API 密钥
-DIFY_DATASET_ID=                             # 数据集 ID
-DIFY_MAX_RETRIES=3                           # 最大重试次数（可选）
-DIFY_TIMEOUT=30                              # 请求超时秒数（可选）
+# .env 中配置（VW_ 前缀命名空间）
+VW_DIFY_API_BASE_URL=https://api.dify.ai/v1   # Dify API 地址（含 /v1 路径）
+VW_DIFY_API_KEY=                                # Dify API 密钥
+VW_DIFY_DATASET_ID=                             # 数据集 ID
+DIFY_MAX_RETRIES=3                              # 最大重试次数（可选，无 VW_ 前缀）
+DIFY_TIMEOUT=30                                 # 请求超时秒数（可选，无 VW_ 前缀）
 ```
+
+### 环境变量加载机制
+
+server.py 启动时自动执行三步加载：
+
+1. **python-dotenv 加载**: 通过 `load_dotenv(project_root/.env, override=False)` 从项目根 `.env` 文件加载环境变量。`override=False` 表示不覆盖已通过 `.mcp.json` env 传入的变量。
+2. **`_resolve_env()` 过滤**: 所有环境变量读取均通过 `_resolve_env(key)` 辅助函数，该函数会过滤未被解析的 `${...}` 字面量字符串（返回 `None`），使 `or` 回退链能正确工作。
+3. **回退链读取**: 每个配置项按优先级读取：
+   - `DIFY_*`（`.mcp.json` env 字段传入，如 `DIFY_API_BASE_URL`）
+   - `VW_DIFY_*`（`.env` 直接读取，如 `VW_DIFY_API_BASE_URL`）
+
+这解决了 Claude Code 启动 MCP 服务器时 `.mcp.json` 中 `${VW_DIFY_*}` 插值可能未被解析的问题。当插值失败时 Claude Code 会将 `${VW_DIFY_API_BASE_URL}` 这样的字面量字符串传入子进程（已知 Bug：#9427, #1254, #14032, #28090），字面量是 truthy 值会导致 `or` 短路使回退链失效；`_resolve_env()` 通过正则过滤 `${...}` 格式字符串截断该问题。
+
+### URL 路径拼接规则
+
+`DIFY_API_BASE_URL`（如 `https://api.dify.ai/v1`）末尾斜杠会被自动清理（`.rstrip("/")`）。API 请求路径不再包含 `/v1` 前缀，直接使用 `/datasets/{id}/retrieve` 和 `/datasets/{id}/documents`，避免 URL 变成 `https://api.dify.ai/v1/v1/datasets/...` 的重复路径问题。
 
 ### 优雅降级行为
 
@@ -122,9 +138,10 @@ DIFY_TIMEOUT=30                              # 请求超时秒数（可选）
 ```
 
 关键设计点：
-- 环境变量使用 `${VAR}` 引用，从 `.env` 文件加载
+- 环境变量使用 `${VAR}` 引用，Claude Code 尝试从进程环境解析插值
+- 当 `${VW_DIFY_*}` 插值失败时（进程环境中不存在），server.py 内部通过 python-dotenv 从 `.env` 加载 `VW_DIFY_*` 作为回退
 - paper-search 使用绝对路径 `cwd` 指向独立项目
-- dify-knowledge 使用 PEP 723 内联依赖，`uv run` 自动解析
+- dify-knowledge 使用 PEP 723 内联依赖（`mcp[cli]`, `httpx`, `python-dotenv`），`uv run` 自动解析
 
 ## Claude Code 本地设置
 
@@ -136,3 +153,27 @@ DIFY_TIMEOUT=30                              # 请求超时秒数（可选）
 2. **检查凭据**: `uv run scripts/validate_env.py` 会检查 Dify 凭据配置状态
 3. **查看日志**: Dify 桥接服务器使用 Python logging，错误信息输出到 stderr
 4. **手动测试桥接服务器**: `uv run scripts/dify-kb-mcp/server.py`（需要 MCP 客户端连接）
+5. **环境变量诊断**: 如果 MCP 工具返回凭据缺失错误，检查以下两个来源是否配置正确：
+   - `.env` 文件中的 `VW_DIFY_API_BASE_URL`、`VW_DIFY_API_KEY`、`VW_DIFY_DATASET_ID`
+   - `.mcp.json` 中的 `${VW_DIFY_*}` 插值是否能在当前 shell 环境中解析
+6. **URL 重复路径问题**: 如果 API 返回 404，检查 `VW_DIFY_API_BASE_URL` 是否已包含 `/v1`（server.py 请求路径不再添加 `/v1` 前缀）
+
+## 已知问题与修复记录
+
+### 环境变量传递失败（已修复 2026-03-03）
+
+**问题**: Claude Code 启动 MCP 服务器时，`.mcp.json` 中 `${VW_DIFY_API_BASE_URL}` 等插值未被解析（进程环境中不存在这些变量），导致 `DIFY_API_BASE_URL` 为空字符串。
+
+**修复**: server.py 新增 `python-dotenv` 依赖，启动时自动从项目根 `.env` 加载环境变量（`override=False` 不覆盖已有值）。环境变量回退链：`DIFY_*` -> `VW_DIFY_*`。
+
+### URL 路径重复（已修复 2026-03-03）
+
+**问题**: `.env` 中 `VW_DIFY_API_BASE_URL=https://api.dify.ai/v1`，但 server.py 请求路径以 `/v1/datasets/...` 开头，最终 URL 变成 `https://api.dify.ai/v1/v1/datasets/...`。
+
+**修复**: 请求路径去掉 `/v1` 前缀，直接使用 `/datasets/{id}/retrieve` 和 `/datasets/{id}/documents`。
+
+### `${VAR}` 插值字面量泄漏（已修复 2026-03-03）
+
+**问题**: Claude Code MCP 环境变量插值存在已知 Bug（#9427, #1254, #14032, #28090）：当 `${VW_DIFY_API_BASE_URL}` 等变量不在进程环境中时，插值不会解析为空字符串，而是将字面量 `${VW_DIFY_API_BASE_URL}` 原样传入子进程。由于字面量是 truthy 字符串，Python `or` 运算符短路，`VW_DIFY_*` 回退链失效。
+
+**修复**: 新增 `_resolve_env(key)` 辅助函数，通过 `re.fullmatch(r"\$\{.+\}", val)` 检测 `${...}` 字面量格式并返回 `None`，使回退链正常工作。同时 `_check_credentials()` 增加 URL 协议前缀检查（`http://` 或 `https://`），可捕获字面量漏网后的 URL 格式错误，错误信息明确提示用 `.env` 文件中的 `VW_DIFY_*` 变量。

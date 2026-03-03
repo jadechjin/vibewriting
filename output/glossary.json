@@ -1,0 +1,64 @@
+{
+  "entries": [
+    {
+      "term": "MOF",
+      "definition": "Metal-Organic Framework, 金属有机框架",
+      "first_section": "introduction"
+    },
+    {
+      "term": "AQE",
+      "definition": "Apparent Quantum Efficiency, 表观量子效率",
+      "first_section": "experiments"
+    },
+    {
+      "term": "AQY",
+      "definition": "Apparent Quantum Yield, 表观量子产率",
+      "first_section": "experiments"
+    },
+    {
+      "term": "LMCT",
+      "definition": "Ligand-to-Metal Charge Transfer, 配体到金属电荷转移",
+      "first_section": "method"
+    },
+    {
+      "term": "LSPR",
+      "definition": "Localized Surface Plasmon Resonance, 局域表面等离子体共振",
+      "first_section": "method"
+    },
+    {
+      "term": "Z-scheme",
+      "definition": "模拟光合作用双光系统的电荷转移机制",
+      "first_section": "method"
+    },
+    {
+      "term": "S-scheme",
+      "definition": "阶梯型异质结电荷转移机制",
+      "first_section": "method"
+    },
+    {
+      "term": "D-A",
+      "definition": "Donor-Acceptor, 供体-受体",
+      "first_section": "method"
+    },
+    {
+      "term": "HOF",
+      "definition": "Hydrogen-bonded Organic Framework, 氢键有机框架",
+      "first_section": "related-work"
+    },
+    {
+      "term": "MXene",
+      "definition": "二维层状碳化物/氮化物材料",
+      "first_section": "method"
+    },
+    {
+      "term": "OWS",
+      "definition": "Overall Water Splitting, 全分解水",
+      "first_section": "introduction"
+    },
+    {
+      "term": "PEC",
+      "definition": "Photoelectrocatalysis, 光电催化",
+      "first_section": "related-work"
+    }
+  ]
+}

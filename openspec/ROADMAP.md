@@ -77,6 +77,7 @@ src/vibewriting/contracts/
 **契约强校验与自愈**: 写入任何契约文件前，必须经过 `jsonschema.validate()` 拦截。校验失败时，系统不报错退出，而是将 `ValidationError` 打包为 Prompt 反弹给 Claude Code 触发修复（"你的输出违反了 Schema，错误在第 X 行，请修正"），最大重试 3 次。
 
 **引用完整性约束（Referential Integrity）**: 契约之间存在外键关系，Phase 6 必须验证：
+
 - `paper_state.json` 中引用的每个 `claim_id` 必须存在于 `literature_cards.jsonl`
 - `paper_state.json` 中引用的每个 `asset_id` 必须存在于 `asset_manifest.json`
 - `paper_state.json` 中引用的每个术语/符号必须存在于 `glossary.json` / `symbols.json`
@@ -109,6 +110,7 @@ src/vibewriting/contracts/
 ```
 
 字段说明：
+
 - `evidence_type`: `empirical` | `theoretical` | `survey` | `meta-analysis`（证据类型，影响门禁策略）
 - `key_statistics`: 可选，关键统计量（如 "p<0.01, d=0.8, N=500"），用于 Phase 4 结果章节精确引用
 - `supporting_quote`: 长度限制 ≤50 词，超出必须标记 `paraphrase: true`
@@ -152,6 +154,7 @@ Git 不仅是版本控制，更是**工作流安全网**：
 每次运行记录关键指标，Phase 7 汇总输出。
 
 **统一运行记录**: 每次端到端执行视为一个 `run`，`run_manifest.json` 包含：
+
 - `run_id`: 唯一标识（UUID）
 - `environment_fingerprint`: Python 版本 + uv.lock 哈希 + TeX Live 版本
 - `input_fingerprint`: 数据文件路径 + 哈希 + 随机种子
@@ -190,6 +193,7 @@ The self-attention mechanism exhibits $O(n^2)$ complexity
 ```
 
 规范：
+
 - 使用 `%% CLAIM_ID: <id>` 格式（双百分号便于 grep 区分普通注释）
 - 不影响 PDF 输出，但人类审阅 `.tex` 源码时可一眼对应证据卡
 - Phase 6 的"证据审查"可自动解析这些注释，与 `literature_cards.jsonl` 交叉比对
@@ -200,6 +204,7 @@ The self-attention mechanism exhibits $O(n^2)$ complexity
 随着论文推进，`literature_cards.jsonl` 和 `paper_state.json` 会变得庞大。为控制 API 成本：
 
 **Prompt 排布规范**（利用 Anthropic Prompt Caching）：
+
 ```
 ┌─────────────────────────────────┐
 │ [Cache Zone - 头部，低变动]       │

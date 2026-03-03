@@ -1,0 +1,19 @@
+{
+  "assets": [
+    {
+      "asset_id": "ASSET-2026-001",
+      "content_hash": "29b57e73a6b50bfc4267ebfbe62c0d9efd12667f88fba45f9e650ebece540fba",
+      "kind": "figure",
+      "path": "C:\\Users\\17162\\AppData\\Local\\Temp\\pytest-of-17162\\pytest-5\\test_asset_manifest_snapshot0\\output\\figures\\sample_data_line.png",
+      "semantic_description": "Line chart: sample_data: y vs x"
+    },
+    {
+      "asset_id": "ASSET-2026-002",
+      "content_hash": "b7272a0ec667edf74972db85e5a6d1243405ae98567c7eed64a2a609e1c8dc4a",
+      "kind": "table",
+      "path": "C:\\Users\\17162\\AppData\\Local\\Temp\\pytest-of-17162\\pytest-5\\test_asset_manifest_snapshot0\\output\\tables\\sample_data_stats.tex",
+      "semantic_description": "Table: Descriptive statistics for sample_data"
+    }
+  ],
+  "count": 2
+}

@@ -1,0 +1,56 @@
+{
+  "$defs": {
+    "GlossaryEntry": {
+      "additionalProperties": false,
+      "description": "A single term definition in the glossary.",
+      "properties": {
+        "term": {
+          "minLength": 1,
+          "title": "Term",
+          "type": "string"
+        },
+        "definition": {
+          "minLength": 1,
+          "title": "Definition",
+          "type": "string"
+        },
+        "first_used_in": {
+          "default": "",
+          "title": "First Used In",
+          "type": "string"
+        },
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Aliases",
+          "type": "array"
+        }
+      },
+      "required": [
+        "term",
+        "definition"
+      ],
+      "title": "GlossaryEntry",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Term glossary for cross-section consistency.\n\nAll mutating operations return a new Glossary instance (immutable pattern).",
+  "properties": {
+    "entries": {
+      "additionalProperties": {
+        "$ref": "#/$defs/GlossaryEntry"
+      },
+      "title": "Entries",
+      "type": "object"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    }
+  },
+  "title": "Glossary",
+  "type": "object"
+}

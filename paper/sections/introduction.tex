@@ -1,3 +1,40 @@
-\section{引言}
+\section{引言}\label{sec:introduction}
 
-待补充。
+% --- 1.1 能源背景与氢能需求 ---
+
+化石燃料的大量消耗导致全球温室气体排放持续攀升，开发清洁可再生能源已成为人类社会可持续发展的迫切需求。 %% NO_CITE: common knowledge
+氢能作为一种高能量密度、零碳排放的理想能源载体，被广泛认为是未来能源体系的重要组成部分。 %% NO_CITE: common knowledge
+然而，当前工业制氢仍以化石燃料蒸汽重整为主，该过程伴随大量二氧化碳排放，难以满足碳中和目标的要求。 %% NO_CITE: common knowledge
+利用太阳能驱动光催化水分解制氢，将取之不尽的太阳能转化为化学能储存于氢气中，被视为实现"绿氢"生产的最具前景路径之一~\citep{hassan2024emerging_trends}。 %% CLAIM_ID: EC-2026-013
+
+% --- 1.2 光催化水分解基本原理 ---
+
+光催化水分解的基本过程包括三个步骤：光吸收产生电子-空穴对、载流子向催化剂表面的迁移与分离、以及表面氧化还原反应~\citep{pmc2024mof_energy_env}。 %% NO_CITE: common knowledge
+其中，水的还原半反应生成氢气（$2\mathrm{H^+} + 2\mathrm{e^-} \rightarrow \mathrm{H_2}$），氧化半反应生成氧气（$2\mathrm{H_2O} \rightarrow \mathrm{O_2} + 4\mathrm{H^+} + 4\mathrm{e^-}$）。 %% NO_CITE: common knowledge
+理想的光催化剂需要满足合适的能带结构、高效的载流子分离能力以及良好的化学稳定性等要求。 %% NO_CITE: common knowledge
+热力学上，全分解水的吉布斯自由能变为$\Delta G = 237.2~\mathrm{kJ/mol}$，对应理论最低光子能量为$1.23~\mathrm{eV}$。 %% NO_CITE: common knowledge
+
+% --- 1.3 MOF材料的独特优势 ---
+
+金属有机框架（Metal-Organic Frameworks, MOFs）是由金属离子或金属簇与有机配体通过配位键自组装形成的多孔晶态材料。 %% NO_CITE: common knowledge
+MOF材料的可调节孔隙率、超高比表面积和可修饰的有机配体使其成为光催化产氢的理想平台~\citep{reddy2021mof_h2_advances}。 %% CLAIM_ID: EC-2026-019
+具体而言，MOF材料在光催化水分解领域展现出以下独特优势：
+（1）超高比表面积（通常$>1000~\mathrm{m^2/g}$）提供丰富的催化活性位点；
+（2）可调节的孔径和拓扑结构有利于底物分子的传质；
+（3）金属节点和有机配体均可参与光吸收和电荷转移过程，且不同金属节点（Zr、Ti、Fe等）对光吸收性质和催化活性具有显著影响~\citep{reddy2021mof_h2_advances}；%% CLAIM_ID: EC-2026-019
+（4）结构和组分的高度可设计性便于实现能带工程调控~\citep{chen2023mof_owsp_review}。 %% CLAIM_ID: EC-2026-001
+
+自2010年首次报道MOF光催化产氢以来，该领域取得了长足进展~\citep{chen2023mof_owsp_review}。 %% CLAIM_ID: EC-2026-001
+2017年，MOF光催化全分解水首次实现，标志着该领域进入了新的发展阶段~\citep{chen2023mof_owsp_review}。 %% CLAIM_ID: EC-2026-001
+然而，目前大多数MOF光催化研究仍集中于产氢半反应，全分解水依然面临巨大挑战~\citep{chen2023mof_owsp_review}。 %% CLAIM_ID: EC-2026-002
+
+% --- 1.4 本文的范围与结构 ---
+
+近年来，研究者们围绕异质结构建、配体功能化、供体-受体工程、金属掺杂、助催化剂负载和MOF衍生材料等策略，系统探索了提升MOF光催化水分解性能的有效途径~\citep{zhang2025optimization_strategies}。 %% CLAIM_ID: EC-2026-006
+此外，全光谱响应设计~\citep{mof_fullspectrum_2025}、产氢耦合选择性氧化反应~\citep{lin2025coupled_oxidation}以及微孔限域激子转移机制~\citep{zhou2023micropore_exciton}等新兴方向也引起广泛关注。 %% CLAIM_ID: EC-2026-011
+
+本文旨在系统综述MOF基材料在光催化水解产氢中的最新研究进展。
+第\ref{sec:related-work}节回顾MOF光催化的发展历程和主要MOF类型；
+第\ref{sec:method}节详细讨论异质结构建、配体修饰、供体-受体工程和全光谱设计等关键优化策略；
+第\ref{sec:experiments}节总结代表性实验成果并进行定量对比分析；
+第\ref{sec:conclusion}节概括主要发现，讨论当前挑战并展望未来发展方向。

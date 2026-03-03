@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\agents\git_safety.py
+# hypothesis_version: 6.151.9
+
+['--', '--cached', '--porcelain', '--quiet', '-C', '-m', ':', 'HEAD', 'add', 'checkout', 'commit', 'diff', 'drop', 'git', 'list', 'output/', 'paper/', 'pop', 'push', 'rev-parse', 'stash', 'status']

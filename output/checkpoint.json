@@ -1,0 +1,75 @@
+{
+  "run_id": "a99e07e4",
+  "topic": "MOF光催化水解产氢",
+  "phases": {
+    "infrastructure": {
+      "status": "completed",
+      "started_at": null,
+      "completed_at": "2026-03-03T03:58:13.000375Z",
+      "error": null
+    },
+    "data_pipeline": {
+      "status": "completed",
+      "started_at": null,
+      "completed_at": "2026-03-03T03:58:13.001375Z",
+      "error": null
+    },
+    "literature": {
+      "status": "completed",
+      "started_at": "2026-03-03T03:59:29.466971Z",
+      "completed_at": "2026-03-03T04:08:35.495813Z",
+      "error": null
+    },
+    "single_draft": {
+      "status": "completed",
+      "started_at": "2026-03-03T04:14:18.364353Z",
+      "completed_at": "2026-03-03T04:42:56.035752Z",
+      "error": null
+    },
+    "multi_agent": {
+      "status": "completed",
+      "started_at": "2026-03-03T04:50:47.699779Z",
+      "completed_at": "2026-03-03T04:56:52.143709+00:00",
+      "error": null
+    },
+    "compilation": {
+      "status": "completed",
+      "started_at": "2026-03-03T04:58:12.522231+00:00",
+      "completed_at": "2026-03-03T05:00:23.801512+00:00",
+      "error": null
+    },
+    "integration": {
+      "status": "completed",
+      "started_at": "2026-03-03T05:01:46.904025+00:00",
+      "completed_at": "2026-03-03T05:01:46.904025+00:00",
+      "error": null
+    }
+  },
+  "config_snapshot": {
+    "topic": "MOF光催化水解产氢",
+    "language": "zh",
+    "document_class": "ctexart",
+    "sections": [
+      "引言",
+      "相关工作",
+      "方法",
+      "实验",
+      "结论"
+    ],
+    "literature_query_count": 3,
+    "min_evidence_cards": 5,
+    "data_dir": null,
+    "random_seed": 42,
+    "writing_mode": "multi",
+    "enable_ai_disclosure": false,
+    "enable_anonymize": false,
+    "natbib_style": "unsrtnat",
+    "auto_approve": false,
+    "float_precision": 6,
+    "dedup_threshold": 0.9,
+    "compile_max_retries": 5,
+    "compile_timeout_sec": 120
+  },
+  "created_at": "2026-03-03T03:58:12.997378Z",
+  "updated_at": "2026-03-03T05:01:46.904025+00:00"
+}

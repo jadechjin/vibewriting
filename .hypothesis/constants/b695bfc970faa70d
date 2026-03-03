@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\literature\dify_inventory.py
+# hypothesis_version: 6.151.9
+
+[0.9, 100, '.bib', '.doc', '.docx', '.epub', '.htm', '.html', '.md', '.pdf', '.rtf', '.tex', '.txt', '10\\.\\d{4,9}/[^\\s]+', 'created_at', 'data', 'error', 'id', 'list_documents', 'message', 'name', 'total', 'utf-8']

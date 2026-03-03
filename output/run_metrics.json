@@ -1,0 +1,47 @@
+{
+  "run_id": "a99e07e4",
+  "topic": "MOF光催化水解产氢",
+  "timestamp": "2026-03-03T05:01:46.904025+00:00",
+  "literature": {
+    "evidence_cards": 23,
+    "unique_sources": 22,
+    "bib_entries": 23,
+    "dedup_rate": 0.0
+  },
+  "writing": {
+    "total_sections": 6,
+    "total_chinese_chars": 6788,
+    "total_words_approx": 7875,
+    "citation_coverage": 1.0,
+    "claim_traceability": 1.0,
+    "tables": 3,
+    "figures": 0
+  },
+  "compilation": {
+    "success": true,
+    "first_pass_success": true,
+    "heal_rounds": 0,
+    "pdf_pages": 14,
+    "pdf_size_bytes": 253781,
+    "overfull_hboxes": 4,
+    "latex_errors": 0,
+    "peer_review_score": 7.8,
+    "peer_review_verdict": "Minor Revision",
+    "contract_violations": 0
+  },
+  "orchestration": {
+    "rounds": 1,
+    "conflicts": 0,
+    "warnings": 0,
+    "quality_verdict": "PASS"
+  },
+  "phase_durations": {
+    "infrastructure": "skipped",
+    "data_pipeline": "skipped",
+    "literature": "546s",
+    "single_draft": "1718s",
+    "multi_agent": "364s",
+    "compilation": "131s",
+    "integration": "N/A"
+  }
+}

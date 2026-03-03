@@ -1,0 +1,219 @@
+{
+  "$defs": {
+    "PaperMetrics": {
+      "additionalProperties": false,
+      "description": "Quality metrics for the paper writing process.",
+      "properties": {
+        "citation_coverage": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Citation Coverage",
+          "type": "number"
+        },
+        "claim_traceability": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Claim Traceability",
+          "type": "number"
+        },
+        "figure_coverage": {
+          "default": 0.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Figure Coverage",
+          "type": "number"
+        },
+        "cross_ref_integrity": {
+          "default": false,
+          "title": "Cross Ref Integrity",
+          "type": "boolean"
+        },
+        "terminology_consistency": {
+          "default": false,
+          "title": "Terminology Consistency",
+          "type": "boolean"
+        },
+        "total_claims": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Total Claims",
+          "type": "integer"
+        },
+        "total_citations": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Total Citations",
+          "type": "integer"
+        },
+        "total_figures_referenced": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Total Figures Referenced",
+          "type": "integer"
+        },
+        "total_tables_referenced": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Total Tables Referenced",
+          "type": "integer"
+        }
+      },
+      "title": "PaperMetrics",
+      "type": "object"
+    },
+    "SectionState": {
+      "additionalProperties": false,
+      "description": "Writing-stage section state (extends Section semantics).",
+      "properties": {
+        "section_id": {
+          "title": "Section Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "outline": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Outline",
+          "type": "array"
+        },
+        "status": {
+          "default": "planned",
+          "enum": [
+            "planned",
+            "drafting",
+            "drafted",
+            "reviewed",
+            "complete"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "claim_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Claim Ids",
+          "type": "array"
+        },
+        "asset_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Asset Ids",
+          "type": "array"
+        },
+        "citation_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Citation Keys",
+          "type": "array"
+        },
+        "tex_file": {
+          "title": "Tex File",
+          "type": "string"
+        },
+        "word_count": {
+          "default": 0,
+          "title": "Word Count",
+          "type": "integer"
+        },
+        "paragraph_count": {
+          "default": 0,
+          "title": "Paragraph Count",
+          "type": "integer"
+        },
+        "no_cite_exemptions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "No Cite Exemptions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "section_id",
+        "title",
+        "tex_file"
+      ],
+      "title": "SectionState",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Global paper state machine tracking writing progress.\n\nDesigned to be compatible with contracts/integrity.py's\nvalidate_referential_integrity() function.",
+  "properties": {
+    "paper_id": {
+      "title": "Paper Id",
+      "type": "string"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "topic": {
+      "title": "Topic",
+      "type": "string"
+    },
+    "phase": {
+      "default": "outline",
+      "enum": [
+        "outline",
+        "drafting",
+        "review",
+        "complete"
+      ],
+      "title": "Phase",
+      "type": "string"
+    },
+    "abstract": {
+      "default": "",
+      "title": "Abstract",
+      "type": "string"
+    },
+    "sections": {
+      "items": {
+        "$ref": "#/$defs/SectionState"
+      },
+      "title": "Sections",
+      "type": "array"
+    },
+    "metrics": {
+      "$ref": "#/$defs/PaperMetrics"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "current_section_index": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Current Section Index",
+      "type": "integer"
+    },
+    "run_id": {
+      "default": "",
+      "title": "Run Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "paper_id",
+    "title",
+    "topic"
+  ],
+  "title": "PaperState",
+  "type": "object"
+}

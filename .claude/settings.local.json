@@ -1,6 +1,17 @@
 {
-  "permissions": {},
+  "permissions": {
+    "allow": [
+      "mcp__sequential-thinking__sequentialthinking",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  },
   "additionalDirectories": [
     "C:/Users/17162/Desktop/Terms/workflow"
-  ]
+  ],
+  "enabledMcpjsonServers": [
+    "paper-search",
+    "dify-knowledge"
+  ],
+  "enableAllProjectMcpServers": true
 }

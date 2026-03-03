@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\writing\incremental.py
+# hypothesis_version: 6.151.9
+
+[120, '-file-line-error', '-xelatex', '.tex', 'Draft', 'build', 'draft_main.*', 'draft_main.tex', 'latexmk', 'latexmk not found', 'unsrtnat', 'utf-8']

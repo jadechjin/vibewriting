@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\models\evidence_card.py
+# hypothesis_version: 6.151.9
+
+['^EC-\\d{4}-\\d{3}$', 'dify-kb', 'empirical', 'forbid', 'manual', 'meta-analysis', 'paper-search', 'supporting_quote', 'survey', 'theoretical']

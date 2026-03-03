@@ -1,0 +1,4 @@
+# file: F:\vibewriting\src\vibewriting\models\base.py
+# hypothesis_version: 6.151.9
+
+['^ASSET-\\d{4}-\\d{3,}$', 'figure', 'forbid', 'table']
