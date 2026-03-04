@@ -7,6 +7,7 @@ and cache literature as EvidenceCards.
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -18,7 +19,9 @@ from vibewriting.literature.dify_inventory import (
     load_dify_inventory,
     sync_dify_inventory,
 )
+from vibewriting.literature.local_mcp_caller import shutdown_auto_mcp_tool_caller
 from vibewriting.literature.models import RawLiteratureRecord
+from vibewriting.literature.runtime_adapter import call_mcp_tool
 
 logger = logging.getLogger(__name__)
 
@@ -44,14 +47,48 @@ class SearchResult:
 
 
 async def _call_mcp_tool(tool_name: str, **kwargs: Any) -> Any:
-    """Placeholder for MCP tool invocation.
+    """MCP tool invocation via runtime adapter.
 
-    In production this is replaced by the Claude Code MCP runtime.
-    During testing it is patched with mock implementations.
+    In tests this function can still be patched directly.
     """
-    raise NotImplementedError(
-        f"MCP tool '{tool_name}' must be called through Claude Code runtime"
-    )
+    return await call_mcp_tool(tool_name, **kwargs)
+
+
+def _as_dict(value: Any) -> dict[str, Any]:
+    """Normalize MCP payloads (dict / JSON string) to dict."""
+    if isinstance(value, dict):
+        return value
+    if isinstance(value, str):
+        try:
+            parsed = json.loads(value)
+        except json.JSONDecodeError:
+            return {}
+        if isinstance(parsed, dict):
+            return parsed
+    return {}
+
+
+def _as_bibtex_text(value: Any) -> str:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, dict):
+        bib = value.get("bibtex")
+        if isinstance(bib, str):
+            return bib
+    return ""
+
+
+def _extract_raw_results(payload: dict[str, Any]) -> list[dict[str, Any]]:
+    """Support both legacy ``results`` and paper-search ``papers`` shapes."""
+    results = payload.get("results")
+    if isinstance(results, list):
+        return [item for item in results if isinstance(item, dict)]
+
+    papers = payload.get("papers")
+    if isinstance(papers, list):
+        return [item for item in papers if isinstance(item, dict)]
+
+    return []
 
 
 # ---------------------------------------------------------------------------
@@ -65,19 +102,40 @@ def _parse_paper_search_results(
     """Convert paper-search JSON results to RawLiteratureRecord list."""
     records: list[RawLiteratureRecord] = []
     for item in raw_results:
-        authors = item.get("authors", [])
-        if isinstance(authors, str):
-            authors = [a.strip() for a in authors.split(",")]
+        authors_raw = item.get("authors", [])
+        authors: list[str] = []
+        if isinstance(authors_raw, str):
+            authors = [a.strip() for a in authors_raw.split(",") if a.strip()]
+        elif isinstance(authors_raw, list):
+            for author in authors_raw:
+                if isinstance(author, str):
+                    name = author.strip()
+                elif isinstance(author, dict):
+                    name = str(author.get("name", "")).strip()
+                else:
+                    name = str(author).strip()
+                if name:
+                    authors.append(name)
+
+        year = 0
+        try:
+            year = int(item.get("year", 0) or 0)
+        except (TypeError, ValueError):
+            year = 0
+
+        abstract = item.get("abstract")
+        if not isinstance(abstract, str) or not abstract:
+            abstract = str(item.get("snippet", "") or "")
 
         records.append(
             RawLiteratureRecord(
                 title=item.get("title", ""),
                 authors=authors,
-                year=int(item.get("year", 0)),
+                year=year,
                 doi=item.get("doi"),
                 arxiv_id=item.get("arxiv_id"),
                 pmid=item.get("pmid"),
-                abstract=item.get("abstract", ""),
+                abstract=abstract,
                 source="paper-search",
                 raw_data=item,
             )
@@ -108,22 +166,71 @@ async def search_via_paper_search(
     """
     try:
         # Step 1: search_papers -> session
-        session = await _call_mcp_tool(
+        session_raw = await _call_mcp_tool(
             "search_papers", query=query, max_results=max_results
         )
+        session = _as_dict(session_raw)
         session_id = session.get("session_id", "")
 
         if not session_id:
             logger.warning("paper-search returned no session_id")
             return [], ""
 
-        # Step 2: export results
-        export = await _call_mcp_tool(
+        # Step 2: if checkpoint flow is active, auto-approve in headless mode.
+        # Real paper-search MCP usually pauses at strategy and result checkpoints.
+        state = session
+        for _ in range(30):
+            if (
+                state.get("is_complete") is True
+                or state.get("status") == "completed"
+            ):
+                break
+
+            if state.get("user_action_required") is True:
+                if mode != "headless":
+                    logger.info(
+                        "paper-search interactive checkpoint pending for session %s",
+                        session_id,
+                    )
+                    return [], ""
+                state = _as_dict(
+                    await _call_mcp_tool(
+                        "decide",
+                        session_id=session_id,
+                        action="approve",
+                        user_response=(
+                            "Auto-approved by vibewriting headless mode "
+                            "to continue literature retrieval."
+                        ),
+                    )
+                )
+                continue
+
+            await asyncio.sleep(0.1)
+            state = _as_dict(
+                await _call_mcp_tool("get_session", session_id=session_id)
+            )
+
+        # Step 3: export JSON results
+        export_json_raw = await _call_mcp_tool(
             "export_results", session_id=session_id, format="json"
         )
+        export_json = _as_dict(export_json_raw)
+        if export_json.get("error"):
+            logger.warning(
+                "paper-search export(json) failed for session %s: %s",
+                session_id,
+                export_json.get("error"),
+            )
+            return [], ""
 
-        raw_results = export.get("results", [])
-        bibtex = export.get("bibtex", "")
+        # Step 4: export BibTeX (separate in current paper-search server)
+        export_bib_raw = await _call_mcp_tool(
+            "export_results", session_id=session_id, format="bibtex"
+        )
+
+        raw_results = _extract_raw_results(export_json)
+        bibtex = _as_bibtex_text(export_bib_raw)
 
         records = _parse_paper_search_results(raw_results)
         return records[:max_results], bibtex
@@ -147,13 +254,39 @@ def _parse_dify_results(
     records: list[RawLiteratureRecord] = []
     for item in raw_results:
         metadata = item.get("metadata", {})
+        if not isinstance(metadata, dict):
+            metadata = {}
+
+        content = item.get("content", "")
+        if not isinstance(content, str) or not content:
+            segment = item.get("segment")
+            if isinstance(segment, dict):
+                content = str(segment.get("content", "") or "")
+            else:
+                content = ""
+
+        year = 0
+        try:
+            year = int(metadata.get("year", 0) or 0)
+        except (TypeError, ValueError):
+            year = 0
+
+        authors_raw = metadata.get("authors", [])
+        authors: list[str]
+        if isinstance(authors_raw, list):
+            authors = [str(a) for a in authors_raw if str(a).strip()]
+        elif isinstance(authors_raw, str):
+            authors = [a.strip() for a in authors_raw.split(",") if a.strip()]
+        else:
+            authors = []
+
         records.append(
             RawLiteratureRecord(
-                title=metadata.get("title", item.get("content", "")[:100]),
-                authors=metadata.get("authors", []),
-                year=int(metadata.get("year", 0)),
+                title=metadata.get("title", content[:100]),
+                authors=authors,
+                year=year,
                 doi=metadata.get("doi"),
-                abstract=item.get("content", ""),
+                abstract=content,
                 source="dify-kb",
                 raw_data=item,
             )
@@ -173,8 +306,19 @@ async def search_via_dify(
         results = await _call_mcp_tool(
             "retrieve_knowledge", query=query
         )
+        if isinstance(results, dict):
+            if results.get("error"):
+                logger.warning("Dify retrieve_knowledge returned error: %s", results.get("message", ""))
+                return []
+            records = results.get("records")
+            if isinstance(records, list):
+                return _parse_dify_results(
+                    [item for item in records if isinstance(item, dict)]
+                )
         if isinstance(results, list):
-            return _parse_dify_results(results)
+            return _parse_dify_results(
+                [item for item in results if isinstance(item, dict)]
+            )
         return []
     except NotImplementedError:
         raise
@@ -222,59 +366,63 @@ async def search_literature(
     are handled by the caller (Skill or Agent), not here.
     """
     result = SearchResult()
-    ps_records: list[RawLiteratureRecord] = []
-    dify_records: list[RawLiteratureRecord] = []
+    try:
+        ps_records: list[RawLiteratureRecord] = []
+        dify_records: list[RawLiteratureRecord] = []
 
-    ps_task = asyncio.create_task(
-        search_via_paper_search(query, max_results=max_results, mode=mode)
-    )
-    dify_task = asyncio.create_task(search_via_dify(query))
+        ps_task = asyncio.create_task(
+            search_via_paper_search(query, max_results=max_results, mode=mode)
+        )
+        dify_task = asyncio.create_task(search_via_dify(query))
 
-    ps_out, dify_out = await asyncio.gather(
-        ps_task, dify_task, return_exceptions=True
-    )
+        ps_out, dify_out = await asyncio.gather(
+            ps_task, dify_task, return_exceptions=True
+        )
 
-    if isinstance(ps_out, Exception):
-        if isinstance(ps_out, NotImplementedError):
-            result.errors.append("paper-search MCP not available in this context")
+        if isinstance(ps_out, Exception):
+            if isinstance(ps_out, NotImplementedError):
+                result.errors.append("paper-search MCP not available in this context")
+            else:
+                result.errors.append(f"paper-search error: {ps_out}")
         else:
-            result.errors.append(f"paper-search error: {ps_out}")
-    else:
-        ps_records, bibtex = ps_out
-        result.bibtex = bibtex
+            ps_records, bibtex = ps_out
+            result.bibtex = bibtex
 
-    if isinstance(dify_out, Exception):
-        if isinstance(dify_out, NotImplementedError):
-            result.errors.append("Dify MCP not available in this context")
+        if isinstance(dify_out, Exception):
+            if isinstance(dify_out, NotImplementedError):
+                result.errors.append("Dify MCP not available in this context")
+            else:
+                result.errors.append(f"Dify error: {dify_out}")
         else:
-            result.errors.append(f"Dify error: {dify_out}")
-    else:
-        dify_records = list(dify_out)
+            dify_records = list(dify_out)
 
-    # Merge: dify-kb first, then paper-search (priority order)
-    merged = [*dify_records, *ps_records]
+        # Merge: dify-kb first, then paper-search (priority order)
+        merged = [*dify_records, *ps_records]
 
-    if merged:
-        deduped, report = deduplicate(merged, threshold=threshold)
+        if merged:
+            deduped, report = deduplicate(merged, threshold=threshold)
 
-        # Inventory dedup: filter against Dify KB documents
-        if inventory_path is not None:
-            try:
-                inventory = await sync_dify_inventory(inventory_path)
-            except Exception as exc:
-                logger.warning("Inventory sync failed, skipping: %s", exc)
-                inventory = load_dify_inventory(inventory_path)
+            # Inventory dedup: filter against Dify KB documents
+            if inventory_path is not None:
+                try:
+                    inventory = await sync_dify_inventory(inventory_path)
+                except Exception as exc:
+                    logger.warning("Inventory sync failed, skipping: %s", exc)
+                    inventory = load_dify_inventory(inventory_path)
 
-            if inventory is not None:
-                deduped, filtered_titles = dedup_against_inventory(
-                    deduped, inventory, threshold=threshold,
-                )
-                report.inventory_filtered_count = len(filtered_titles)
-                report.inventory_filtered_titles = filtered_titles
+                if inventory is not None:
+                    deduped, filtered_titles = dedup_against_inventory(
+                        deduped, inventory, threshold=threshold,
+                    )
+                    report.inventory_filtered_count = len(filtered_titles)
+                    report.inventory_filtered_titles = filtered_titles
 
-        source_priority = {"dify-kb": 0, "paper-search": 1, "web-search": 2}
-        deduped.sort(key=lambda r: source_priority.get(r.source, 99))
-        result.records = deduped[:max_results]
-        result.dedup_report = report
+            source_priority = {"dify-kb": 0, "paper-search": 1, "web-search": 2}
+            deduped.sort(key=lambda r: source_priority.get(r.source, 99))
+            result.records = deduped[:max_results]
+            result.dedup_report = report
 
-    return result
+        return result
+    finally:
+        # Avoid dangling stdio MCP subprocess transports after asyncio.run() exits.
+        await shutdown_auto_mcp_tool_caller()

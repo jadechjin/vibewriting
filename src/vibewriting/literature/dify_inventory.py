@@ -20,6 +20,7 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 from vibewriting.literature.dedup import normalize_title, token_jaccard
+from vibewriting.literature.runtime_adapter import call_mcp_tool
 
 logger = logging.getLogger(__name__)
 
@@ -91,14 +92,11 @@ def _parse_dify_doc(doc: dict[str, Any]) -> DifyDocEntry:
 
 
 async def _call_mcp_tool(tool_name: str, **kwargs: Any) -> Any:
-    """Placeholder for MCP tool invocation.
+    """MCP tool invocation via runtime adapter.
 
-    In production this is replaced by the Claude Code MCP runtime.
-    During testing it is patched with mock implementations.
+    In tests this function can still be patched directly.
     """
-    raise NotImplementedError(
-        f"MCP tool '{tool_name}' must be called through Claude Code runtime"
-    )
+    return await call_mcp_tool(tool_name, **kwargs)
 
 
 # ---------------------------------------------------------------------------

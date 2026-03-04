@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
@@ -25,6 +25,7 @@ class TestSearchViaPaperSearch:
             mock_mcp.side_effect = [
                 {"session_id": "test-session-001", "status": "completed"},
                 mock_paper_search_results,
+                mock_paper_search_results["bibtex"],
             ]
             records, bibtex = await search_via_paper_search("transformer attention", max_results=10)
             assert len(records) > 0
@@ -38,10 +39,49 @@ class TestSearchViaPaperSearch:
         with patch("vibewriting.literature.search._call_mcp_tool", new_callable=AsyncMock) as mock_mcp:
             mock_mcp.side_effect = [
                 {"session_id": "test-session-002", "status": "completed"},
-                {"results": [], "bibtex": ""},
+                {"results": []},
+                "",
             ]
             records, bibtex = await search_via_paper_search("nonexistent topic", max_results=10)
             assert records == []
+            assert bibtex == ""
+
+    @pytest.mark.asyncio
+    async def test_headless_auto_approve_checkpoint(self) -> None:
+        from vibewriting.literature.search import search_via_paper_search
+
+        with patch("vibewriting.literature.search._call_mcp_tool", new_callable=AsyncMock) as mock_mcp:
+            mock_mcp.side_effect = [
+                {
+                    "session_id": "sid-001",
+                    "user_action_required": True,
+                    "checkpoint_kind": "strategy_confirmation",
+                },
+                {"session_id": "sid-001", "is_complete": True},
+                {
+                    "papers": [
+                        {
+                            "title": "Auto Approved Paper",
+                            "authors": [{"name": "Alice"}],
+                            "year": 2024,
+                            "doi": "10.1/auto",
+                        }
+                    ],
+                },
+                "@article{auto2024}\n",
+            ]
+
+            records, bibtex = await search_via_paper_search(
+                "auto approve query",
+                max_results=10,
+                mode="headless",
+            )
+
+            assert len(records) == 1
+            assert records[0].title == "Auto Approved Paper"
+            assert "@article" in bibtex
+            # ensure decide() was actually invoked
+            assert any(call.args[0] == "decide" for call in mock_mcp.await_args_list)
 
 
 class TestSearchViaDify:
@@ -62,6 +102,16 @@ class TestSearchViaDify:
             mock_mcp.side_effect = Exception("Dify unavailable")
             records = await search_via_dify("test query")
             assert records == []  # Should not raise, returns empty
+
+    @pytest.mark.asyncio
+    async def test_dict_response_shape(self, mock_dify_results: list[dict]) -> None:
+        from vibewriting.literature.search import search_via_dify
+
+        with patch("vibewriting.literature.search._call_mcp_tool", new_callable=AsyncMock) as mock_mcp:
+            mock_mcp.return_value = {"error": False, "records": mock_dify_results}
+            records = await search_via_dify("transformer mechanism")
+            assert isinstance(records, list)
+            assert len(records) == 1
 
 
 class TestSearchLiterature:

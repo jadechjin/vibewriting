@@ -5,13 +5,13 @@
     "infrastructure": {
       "status": "completed",
       "started_at": null,
-      "completed_at": "2026-03-03T03:58:13.000375Z",
+      "completed_at": "2026-03-04T13:09:18.098974Z",
       "error": null
     },
     "data_pipeline": {
       "status": "completed",
       "started_at": null,
-      "completed_at": "2026-03-03T03:58:13.001375Z",
+      "completed_at": "2026-03-04T13:09:18.098974Z",
       "error": null
     },
     "literature": {
@@ -29,19 +29,19 @@
     "multi_agent": {
       "status": "completed",
       "started_at": "2026-03-03T04:50:47.699779Z",
-      "completed_at": "2026-03-03T04:56:52.143709+00:00",
+      "completed_at": "2026-03-03T04:56:52.143709Z",
       "error": null
     },
     "compilation": {
       "status": "completed",
-      "started_at": "2026-03-03T04:58:12.522231+00:00",
-      "completed_at": "2026-03-03T05:00:23.801512+00:00",
+      "started_at": "2026-03-03T04:58:12.522231Z",
+      "completed_at": "2026-03-03T05:00:23.801512Z",
       "error": null
     },
     "integration": {
       "status": "completed",
-      "started_at": "2026-03-03T05:01:46.904025+00:00",
-      "completed_at": "2026-03-03T05:01:46.904025+00:00",
+      "started_at": "2026-03-03T05:01:46.904025Z",
+      "completed_at": "2026-03-03T05:01:46.904025Z",
       "error": null
     }
   },
@@ -71,5 +71,5 @@
     "compile_timeout_sec": 120
   },
   "created_at": "2026-03-03T03:58:12.997378Z",
-  "updated_at": "2026-03-03T05:01:46.904025+00:00"
+  "updated_at": "2026-03-04T13:09:18.098974Z"
 }

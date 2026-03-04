@@ -32,6 +32,9 @@ class PaperConfig(BaseModel):
     enable_anonymize: bool = False
     natbib_style: str = "unsrtnat"
     auto_approve: bool = False
+    output_formats: list[Literal["latex", "docx"]] = ["latex"]
+    reference_docx_path: str | None = None
+    csl_path: str | None = None
 
     # Pipeline configuration (migrated from .env non-sensitive fields)
     float_precision: int = 6
@@ -44,6 +47,13 @@ class PaperConfig(BaseModel):
     def sections_not_empty(cls, v: list[str]) -> list[str]:
         if not v:
             raise ValueError("sections must not be empty")
+        return v
+
+    @field_validator("output_formats")
+    @classmethod
+    def output_formats_not_empty(cls, v: list[Literal["latex", "docx"]]) -> list[Literal["latex", "docx"]]:
+        if not v:
+            raise ValueError("output_formats must not be empty")
         return v
 
     @field_validator("literature_query_count")

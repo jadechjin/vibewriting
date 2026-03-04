@@ -1,7 +1,9 @@
 # vibewriting
 
-这是一个**配合 Claude Code 使用**的科研论文自动化写作项目。  
-核心入口是 `.claude/skills/` 里的 Skill 命令，不是独立的通用 CLI 产品。
+这是一个**兼容 Claude Code 与 Codex**的科研论文自动化写作项目。  
+Skill 双入口：
+- Claude: `.claude/skills/`
+- Codex: `.agents/skills/`（与 Claude 技能保持同源流程）
 
 在 Claude Code 对话里输入主题后，可端到端产出可编译的 LaTeX 论文和 PDF。
 
@@ -11,8 +13,8 @@
 
 ```
 +--------------------------------------------------+
-|          编排与推理层 (Claude Code)                  |
-|  CLAUDE.md | Skills | Sub-agents | Agent Teams    |
+|      编排与推理层 (Claude Code / Codex)             |
+|  CLAUDE.md | AGENTS.md | Skills | Agent Teams      |
 +--------------------------------------------------+
                     |  MCP 协议
 +--------------------------------------------------+
@@ -112,6 +114,25 @@ sections:
 | `output/checkpoint.json` | 检查点（支持断点续跑） |
 | `output/run_metrics.json` | 运行指标报告 |
 | `output/paper_state.json` | 论文状态快照 |
+
+### MCP 运行时适配（Claude + Codex）
+
+文献检索模块不再绑定某个单一运行时，可通过统一适配接口注入 MCP 调用器：
+
+```python
+from vibewriting.literature import set_mcp_tool_caller
+
+async def my_caller(tool_name: str, **kwargs):
+    ...  # 调用 Claude 或 Codex 的 MCP 工具
+
+set_mcp_tool_caller(my_caller)
+```
+
+也可通过环境变量指定：
+
+```bash
+export VW_MCP_TOOL_CALLER=your_module:your_function
+```
 
 ## 非常详细使用指南
 
@@ -293,6 +314,10 @@ uv run python -m vibewriting.latex.cli run
 
 ```bash
 uv run python -m vibewriting.latex.cli run --skip-external-api
+```
+
+```bash
+uv run python -m vibewriting.latex.cli run --export-docx
 ```
 
 关键输出：

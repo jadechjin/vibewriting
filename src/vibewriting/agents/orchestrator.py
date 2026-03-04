@@ -29,6 +29,10 @@ from vibewriting.agents.merge_protocol import (
 from vibewriting.agents.planner import build_section_task_graph, get_ready_tasks
 from vibewriting.models.glossary import Glossary, SymbolTable
 from vibewriting.models.paper_state import PaperState
+from vibewriting.rendering.ir import (
+    build_document_ir_from_paper_state,
+    write_document_ir,
+)
 from vibewriting.writing.quality_gates import GateReport, run_all_gates
 from vibewriting.writing.state_manager import PaperStateManager
 
@@ -185,6 +189,12 @@ class WritingOrchestrator:
 
         # Save final state
         self._state_manager.save(state)
+        try:
+            # Emit format-neutral IR after final persist for downstream renderers.
+            document_ir = build_document_ir_from_paper_state(state, self._paper_dir)
+            write_document_ir(document_ir, self._output_dir / "document_ir.json")
+        except Exception as exc:
+            logger.warning("Failed to emit document_ir.json: %s", exc)
 
         success = len(completed_ids) == total_sections and all_unresolved == 0
 

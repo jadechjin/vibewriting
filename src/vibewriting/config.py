@@ -42,6 +42,11 @@ class Settings(BaseSettings):
     enable_ai_disclosure: bool = False
     crossref_api_email: str = ""
 
+    # Multi-format output
+    output_formats: str = "latex"
+    reference_docx_path: str = ""
+    csl_path: str = ""
+
     # Paths (computed defaults, not from env)
     project_root: Path = PROJECT_ROOT
     data_dir: Path = PROJECT_ROOT / "data"
@@ -79,7 +84,15 @@ def apply_paper_config(paper_config: PaperConfig) -> Settings:
         "compile_max_retries": "compile_max_retries",
         "compile_timeout_sec": "compile_timeout_sec",
         "enable_ai_disclosure": "enable_ai_disclosure",
+        "reference_docx_path": "reference_docx_path",
+        "csl_path": "csl_path",
     }
+
+    # PaperConfig stores this as list, Settings stores comma-separated string.
+    if getattr(paper_config, "output_formats", None):
+        joined = ",".join(paper_config.output_formats)
+        if settings.output_formats == defaults["output_formats"].default:
+            overrides["output_formats"] = joined
 
     for pc_field, settings_field in field_map.items():
         pc_value = getattr(paper_config, pc_field, None)
