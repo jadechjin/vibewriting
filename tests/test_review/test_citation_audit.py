@@ -63,6 +63,27 @@ class TestCrosscheckEvidenceCards:
         result = crosscheck_with_evidence_cards({"f": ["EC-0001-001"]}, missing)
         assert result.verified_count == 0
 
+    def test_deduplicates_claim_ids(self, cards_path: Path):
+        claim_ids = {"intro.tex": ["EC-0001-001", "EC-0001-001"]}
+        result = crosscheck_with_evidence_cards(claim_ids, cards_path)
+        assert result.verified_count == 1
+
+    def test_returns_sorted_missing_and_orphan(self, tmp_path: Path):
+        cards = tmp_path / "cards.jsonl"
+        cards.write_text(
+            "\n".join([
+                json.dumps({"claim_id": "EC-0003-001"}),
+                json.dumps({"claim_id": "EC-0002-001"}),
+            ]),
+            encoding="utf-8",
+        )
+        claim_ids = {"intro.tex": ["EC-0004-001", "EC-0001-001"]}
+
+        result = crosscheck_with_evidence_cards(claim_ids, cards)
+
+        assert result.orphan_claims == ["EC-0001-001", "EC-0004-001"]
+        assert result.missing_evidence_cards == ["EC-0002-001", "EC-0003-001"]
+
 
 class TestRunCitationAudit:
     def test_full_audit(self, tmp_paper_dir: Path, cards_path: Path):
